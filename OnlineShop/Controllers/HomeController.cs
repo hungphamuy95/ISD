@@ -19,6 +19,8 @@ namespace TkSchoolNews.Controllers
     {
         //ghi log hệ thống
         public log4net.ILog logger = log4net.LogManager.GetLogger("TkSchoolNews");
+
+        #region show trang chủ và thông tin tại trang chủ
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
@@ -35,6 +37,7 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
 
         [AllowAnonymous]
         public ActionResult NewsList(int page = 1, int pagesize = 10)
