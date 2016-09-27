@@ -1,0 +1,62 @@
+﻿@model TK.Business.Model.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(new {ReturnUrl=ViewBag.returnurl}))
+{
+    
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-8">
+            
+            
+                
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        <h3>Đăng nhập vào hệ thống</h3>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.username, new { @placeholder="tên đăng nhập"  })
+                            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.password, new { @type = "password" , @placeholder = "mật khẩu" })
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.rememberme)
+                                @Html.ValidationMessageFor(model => model.rememberme, "", new { @class = "text-danger" })ghi nhớ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="">
+                            <input type="submit" value="đăng nhập" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+        <div class="col-lg-2">
+        </div>
+        
+    </div>
+    
+}
+

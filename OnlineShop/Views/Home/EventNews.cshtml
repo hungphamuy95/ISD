@@ -1,0 +1,18 @@
+﻿@using TK.Business.Data
+@{
+    TblGroupNew o = new TblGroupNew();
+    o = (TblGroupNew)ViewBag.GroupNewsName;
+    ViewBag.Title = o.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
+    @{ 
+        TblNewsDraff obj = new TblNewsDraff();
+        obj = (TblNewsDraff)ViewBag.School;
+    }
+    <h4>@obj.Title</h4>
+    @Html.Raw(System.Web.HttpUtility.HtmlDecode(obj.Content))
+</div>
+<br />
+

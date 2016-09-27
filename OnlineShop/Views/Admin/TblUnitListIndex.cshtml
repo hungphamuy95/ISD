@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý đơn vị";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <span style="color:red;">danh sách đơn vị</span></h4>
+<div ng-app="myApp" ng-controller="myCtrl">
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table">
+                <tr class="success">
+                    <th><label>tìm theo tất cả</label></th>
+                    <td><input type="text" name="searchname" ng-model="searchText.$" /><br /></td>
+                </tr>
+                <tr class="danger">
+                    <th><label>tìm theo tên</label></th>
+                    <td><input type="text" name="searchname" ng-model="searchText.Name" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <table cellpadding="12" class="table table-bordered table-hover">
+        <tr>
+            <th>mã số</th>
+            <th>tên đơn vị</th>
+            <th>số điện thoại</th>
+            <th>Fax</th>
+            <th>thư điện tử</th>
+            <th>trạng thái</th>
+            <th>địa chỉ</th>
+            <th>hành động</th>
+        </tr>
+        <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.UnitId}}">
+            <td>
+               {{uni.UnitId}}
+
+            </td>
+            <td>
+                {{uni.Name}}
+            </td>
+            <td>
+                {{uni.Phone}}
+            </td>
+            <td>
+                {{uni.Fax}}
+            </td>
+            <td>
+                {{uni.Email}}
+            </td>
+            <td>
+                {{uni.Status?'kích hoạt':'khóa'}}
+            </td>
+            <td>
+                {{uni.Address}}
+            </td>
+            <td>
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;<button class="btn btn-danger" ng-click="Delete(uni.UnitId)"><span class="glyphicon glyphicon-trash"></span></button>
+            </td>
+        </tr>
+    </table>
+    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </button>
+    <label>&nbsp;số bản ghi</label><input type="text" size="1" ng-model="pageSize"/>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+    <br /><br />
+    <button class="btn btn-info" id="create">tạo mới</button>&nbsp;<button class="btn btn-info">thoát</button><br />
+    <div class="row" id="cre" style="display:none;">
+        <div class="col-lg-6">
+            <form name="Form" onsubmit="return validate()">
+                <table class="table">
+                    <tr class="info">
+                        <th>mã đơn vị</th>
+                        <td><input type="text" name="id" ng-model="unitid"  required/></td>
+                    </tr>
+                    <tr class="info">
+                        <th>tên đơn vị</th>
+                        <td><input type="text" name="name" ng-model="unitname" required/></td>
+                    </tr>
+                    <tr class="info">
+                        <th>điện thoại</th>
+                        <td><input type="text" name="phone" ng-model="unitphone" required/></td>
+                    </tr>
+                    <tr class="info">
+                        <th>fax</th>
+                        <td><input type="text" name="fax" ng-model="unitfax" required/></td>
+                    </tr>
+                    <tr class="info">
+                        <th>thư điện tử</th>
+                        <td><input type="text" name="email" ng-model="unitemail" required/></td>
+                    </tr>
+                    <tr class="info">
+                        <th>trạng thái</th>
+                        <td><input type="checkbox" name="status" ng-model="unitstatus" /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>địa chỉ</th>
+                        <td><input type="text" name="address" ng-model="unitadd" required/></td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary" ng-click="update(unitid, unitname, unitphone, unitfax, unitemail, unitstatus, unitadd)"> tạo</button>
+            </form>
+            
+        </div>
+        <br />
+    </div>
+</div>
+<br />
+<script>
+    /*
+    *author: Phạm Huy Hùng
+    *todo: thiết lập module
+    */
+    var app = angular.module("myApp", ['ngSanitize']);
+    app.controller("myCtrl", function ($scope, $http, $window) {
+        
+            $http({
+                method: "POST",
+                url: "/Admin/TblUnitList"
+            }).
+            /*
+    *author: Phạm Huy Hùng
+    *todo: lấy dữ liệu từ controller
+    */
+            then(function (response) {
+                $scope.unit = response.data;
+                $scope.currentPage = 0;
+                $scope.pageSize = 5;
+                $scope.numberOfPages = function () {
+                    return Math.ceil($scope.unit.length / $scope.pageSize);
+                }
+            });
+        
+        /*
+    *author: Phạm Huy Hùng
+    *todo: post dữ liệu
+    */
+        $scope.update = function (_id, _name, _phone, _fax, _email, _status, _add) {
+            $scope.unitid = _id;
+            $scope.unitname = _name;
+            $scope.unitphone = _phone;
+            $scope.unitfax = _fax;
+            $scope.unitemail = _email;
+            $scope.unitstatus = _status;
+            $scope.unitadd = _add;
+            $http({
+                method: "POST",
+                url: "/Admin/TblUnitCreate",
+                type: "json",
+                data:{id:_id,name:_name, phone:_phone, fax:_fax, email:_email, status:_status, address:_add}
+            }).then(function () {
+                $http({
+                    method: "POST",
+                    url: "/Admin/TblUnitList"
+                }).then(function (res) {
+                    $scope.unit = res.data;
+                });
+            });
+        };
+        /*author: Phạm Huy Hùng
+        * todo: xóa dữ liệu
+        */
+            $scope.Delete = function (_id) {
+                var delunit = $window.confirm("bạn có chắc muốn xóa bản ghi này");
+                if (delunit) {
+                    $http({
+                        method: "POST",
+                        url: "/Admin/TblUnitDelete",
+                        type: "json",
+                        data:{id:_id}
+                    }).then(function () {
+                        $(document).ready(function () {
+                            $("#row_" + _id + "").remove();
+                        });
+                    });
+                }
+            }
+        
+    });
+    app.filter('startFrom', function () {
+        return function (input, start) {
+            if (!input || !input.length) { return; }
+            start = +start; //parse to int
+            return input.slice(start);
+        }
+    });
+    $(document).ready(function () {
+        $('#create').click(function () {
+            $('#cre').slideToggle();
+        });
+    });
+    function validate() {
+        var a = document.forms["Form"]["id"].value;
+        var b = document.forms["Form"]["name"].value;
+        var c = document.forms["Form"]["phone"].value;
+        var d = document.forms["Form"]["fax"].value;
+        var e = document.forms["Form"]["email"].value;
+        var f = document.forms["Form"]["status"].value;
+        var g = document.forms["Form"]["add"].value;
+        if(a==null||a=="" && b==null||b=="" && c==null||c=="" && d==null||d=="" && e==null||e=="" && f==null||f=="", g==null||g=="" )
+        {
+            alert("bạn không được để trống");
+            return false;
+        }
+    }
+</script>
+

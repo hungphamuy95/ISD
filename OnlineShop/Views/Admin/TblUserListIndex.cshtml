@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "quản lý người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div ng-app="myApp" ng-controller="myCtrl">
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table">
+                <tr class="success">
+                    <th><label>tìm theo tất cả</label></th>
+                    <td><input type="text" name="searchname" ng-model="searchText.$" /><br /></td>
+                </tr>
+                <tr class="danger">
+                    <th><label>tìm theo tên</label></th>
+                    <td><input type="text" name="searchname" ng-model="searchText.Name" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <table cellpadding="12" class="table table-bordered table-hover">
+        <tr>
+            <th>mã số</th>
+            <th>tên đơn vị</th>
+            <th>số điện thoại</th>
+            <th>Fax</th>
+            <th>thư điện tử</th>
+            <th>trạng thái</th>
+            <th>địa chỉ</th>
+            <th>hành động</th>
+        </tr>
+        <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.UnitId}}">
+            <td>
+                {{uni.UnitId}}
+
+            </td>
+            <td>
+                {{uni.Name}}
+            </td>
+            <td>
+                {{uni.Phone}}
+            </td>
+            <td>
+                {{uni.Fax}}
+            </td>
+            <td>
+                {{uni.Email}}
+            </td>
+            <td>
+                {{uni.Status?'kích hoạt':'khóa'}}
+            </td>
+            <td>
+                {{uni.Address}}
+            </td>
+            <td>
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;<button class="btn btn-danger" ng-click="Delete(uni.UnitId)"><span class="glyphicon glyphicon-trash"></span></button>
+            </td>
+        </tr>
+    </table>
+    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </button>
+    <label>&nbsp;số bản ghi</label><input type="text" size="1" ng-model="pageSize" />
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+    <br /><br />
+    <button class="btn btn-info" id="create">tạo mới</button>&nbsp;<button class="btn btn-info">thoát</button><br />
+    <div class="row" id="cre" style="display:none;">
+        <div class="col-lg-6">
+            <form name="Form" onsubmit="return validate()">
+                <table class="table">
+                    <tr class="info">
+                        <th>mã đơn vị</th>
+                        <td><input type="text" name="id" ng-model="unitid" required /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>tên đơn vị</th>
+                        <td><input type="text" name="name" ng-model="unitname" required /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>điện thoại</th>
+                        <td><input type="text" name="phone" ng-model="unitphone" required /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>fax</th>
+                        <td><input type="text" name="fax" ng-model="unitfax" required /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>thư điện tử</th>
+                        <td><input type="text" name="email" ng-model="unitemail" required /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>trạng thái</th>
+                        <td><input type="checkbox" name="status" ng-model="unitstatus" /></td>
+                    </tr>
+                    <tr class="info">
+                        <th>địa chỉ</th>
+                        <td><input type="text" name="address" ng-model="unitadd" required /></td>
+                    </tr>
+                </table>
+            </form>
+            <input type="submit" name="submit" class="btn btn-primary" ng-click="update(unitid, unitname, unitphone, unitfax, unitemail, unitstatus, unitadd)" value="tạo" />
+        </div>
+        <br />
+    </div>
+</div>

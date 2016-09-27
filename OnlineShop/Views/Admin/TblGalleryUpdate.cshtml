@@ -1,0 +1,31 @@
+﻿@model TK.Business.Data.TblGallery
+@{
+    ViewBag.Title = "cập nhật ảnh";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <a href="@Url.Action("TblGalleryListIndex","Admin")">quản lý album ảnh</a> <strong>>></strong> <span style="color:red;">cập nhật thông tin ảnh</span></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <table class="table table-bordered">
+        <tr class="info">
+            <th>tên ảnh</th>
+            <td>@Html.TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })</td>
+        </tr>
+        <tr class="info">
+            <th>đường dẫn</th>
+            <td>@Html.TextBoxFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control" }, @id = "txtImage" })<button id="btnselect">chọn ảnh</button></td>
+        </tr>
+        <tr class="info">
+            <th>xem ảnh</th>
+            <td><img src="@Model.ImageUrl" alt="@Model.Name" height="400" width="600" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="cập nhật" class="btn btn-default" />
+    <br />
+}
+
+<br />

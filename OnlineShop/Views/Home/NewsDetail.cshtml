@@ -1,0 +1,112 @@
+﻿@using TK.Business.Model
+@using TK.Business.Data
+@model TblCommentModel
+@{
+    TblNewsDraff data = ViewBag.NewsDetail;
+    List<TblFile> file = (List<TblFile>)ViewBag.FileAttach;
+    List<TblComment> comm = (List<TblComment>)ViewBag.cmt;
+    ViewBag.Title =data.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
+            <h6><span style="color:darkslategrey">@Convert.ToDateTime(data.CreateDate).ToString("dd/MM/yyyy")</span>&nbsp;|&nbsp;<span style="color:darkslategrey;">người đăng: @data.CreateUser</span></h6>
+
+            <h3>@data.Title</h3>
+            <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(data.ShortContent))</span><br />
+            @Html.Raw(System.Web.HttpUtility.HtmlDecode(data.Content))
+            @{ 
+                if (file == null)
+                {
+                    <div></div>
+                }
+                else
+                {
+                    foreach (var item in file)
+                    {
+                        <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = item.Directory, @filename = item.Name }))">@item.Name</a><p></p>
+                    }
+                }
+            }
+            <br />
+            <hr />
+            <h4>BÌNH LUẬN:</h4>
+            @if (comm == null)
+            {
+                <span style="color:black;">Hãy trở thành người đầu tiên bình luận cho bài viết này</span>
+                        }
+                        else
+                        {
+                            int i = 1;
+                            foreach (var item in comm)
+                            {
+                        <div class="row" style="border:1px solid gray; border-radius:10px;">
+                            <div class="col-lg-12" style="height:30px; background: linear-gradient(#334d80, #546994); border:1px solid white; border-top-right-radius:10px;border-top-left-radius:10px;"><span style="float:left; color:white;">@Convert.ToDateTime(item.CreateDate).ToString("dd/MM/yyyy")</span><span style="float:right;color:white; font-size:15pt;">#@(i++)</span></div>
+                            <div class="col-lg-12" style="height:30px; border-bottom:1px solid gray;"><span style="font-size:12pt;">Bình luận bởi: <span style="color:red;">@item.Name</span></span>&nbsp;<span>@(item.IsAd.GetValueOrDefault(true)?"quản trị viên":"")</span></div><hr />
+                            <div class="col-lg-12"><strong>Re: @data.Title</strong></div><hr />
+                            <div class="col-lg-12">@Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Content))</div>
+                            <div class="col-lg-12"><a href="@Url.Action("Quotation","Home", new { @quote=item.Content, @usercomment=item.Name, @metatitle = data.Metatitle, @id = data.NewsId })"><img src="~/Images/quote.png" style="float:right;" height="40" width="50" class="btn btn-default" /></a></div><br />&nbsp;
+                        </div>
+                        <br />
+                }
+
+            }
+           @using (Html.BeginForm("TblCommentCreate","Home", new { @metatitle = data.Metatitle, @id =data.NewsId}))
+           {
+                @Html.AntiForgeryToken()
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>tên của bạn</th>
+                            <td>
+                                @Html.TextBoxFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>bình luận của bạn</th>
+                        <td>
+                            <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
+                            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><div class="g-recaptcha" data-sitekey="6LeaPCUTAAAAAEPe8_virfJt8mNZfi7ewPHoaJpZ"></div></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" value="bình luận" class="btn btn-info" /></td>
+                    </tr>
+                </table>
+                </div>
+            }
+        </div>
+        <a href="@Url.Action("NewsList","Home")"><span  class="glyphicon glyphicon-arrow-left" style="font-size:30px;"></span><span style="font-size:20px;">&nbsp;DANH SÁCH TIN TỨC</span></a>
+    </div>
+    <br />&nbsp;
+    
+</div>
+<br />
+<script>
+    var editor3 = CKEDITOR.replace('txtComment', {
+            extraPlugins: 'youtube',
+            uiColor: '#14B8C4',
+            language: 'vi',
+            ProcessHTMLEntities: false,
+            enterMode: CKEDITOR.ENTER_BR,
+            width: '100%',
+            skin: 'office2013',
+            toolbar: [
+            { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+            { name: 'links', items: ['Link', 'Unlink'] },
+            { name: 'insert', items: ['Image', 'Smiley'] },
+            { name: 'paragraph', items: ['Blockquote'] }
+            ],
+            smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
+            smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif'],
+        smiley_descriptions:[':adore:',':boom:',':ah:',':amazed:',':angry:',':badsmelly:']
+        });
+</script>
