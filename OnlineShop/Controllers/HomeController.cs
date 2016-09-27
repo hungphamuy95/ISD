@@ -162,6 +162,7 @@ namespace TkSchoolNews.Controllers
         #endregion
 
 
+        #region comment
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
@@ -271,5 +272,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
     }
 }
