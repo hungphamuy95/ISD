@@ -37,7 +37,7 @@ namespace TkSchoolNews.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult NewsList(int page=1, int pagesize=10)
+        public ActionResult NewsList(int page = 1, int pagesize = 10)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace TkSchoolNews.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
-        
+
         public ActionResult TblCommentCreate(string metatitle, long id, TblCommentModel model, FormCollection form)
         {
             try
@@ -191,7 +191,7 @@ namespace TkSchoolNews.Controllers
                 o.Content = "<div style='border: 1px solid gray; border-radius:10px;'><blockquote><span><strong>bình luận của&nbsp;<span style='color:red;'>" + usercomment + "</span></strong></span><br>" + quote + "</blockquote></div>";
                 return View(o);
             }
-            
+
             catch (Exception ex)
             {
                 logger.Info("Home" + "::Quotation::" + ex.Message);
