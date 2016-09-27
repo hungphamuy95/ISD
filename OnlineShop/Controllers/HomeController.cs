@@ -139,37 +139,45 @@ namespace TkSchoolNews.Controllers
         
         public ActionResult TblCommentCreate(string metatitle, long id, TblCommentModel model, FormCollection form)
         {
-            const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
-            var secret = ConfigurationManager.AppSettings["SecretKey"];
-            var response = form["g-recaptcha-response"];
-            var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
-
-            var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
-
-            using (var wc = new WebClient())
+            try
             {
-                wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                var json = wc.UploadString(verifyUrl, myParameters);
-                var js = new DataContractJsonSerializer(typeof(CapchaRespond));
-                var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
-                var result = js.ReadObject(ms) as CapchaRespond;
-                if (result != null && result.Success) // SUCCESS!!!
+                const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+                var secret = ConfigurationManager.AppSettings["SecretKey"];
+                var response = form["g-recaptcha-response"];
+                var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
+
+                var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
+
+                using (var wc = new WebClient())
                 {
-                    if (ModelState.IsValid)
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    var json = wc.UploadString(verifyUrl, myParameters);
+                    var js = new DataContractJsonSerializer(typeof(CapchaRespond));
+                    var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                    var result = js.ReadObject(ms) as CapchaRespond;
+                    if (result != null && result.Success) // SUCCESS!!!
                     {
-                        TblComment o = new TblComment();
-                        o.Name = model.Name;
-                        o.Content = model.Content;
-                        o.NewsId = id;
-                        o.CreateDate = DateTime.Now;
-                        o.IsAd = false;
-                        new TblCommentDao().Create(o);
-                        return RedirectToAction("NewsDetail", "Home",new { id = id, metatitle= HttpUtility.UrlDecode(metatitle) });
+                        if (ModelState.IsValid)
+                        {
+                            TblComment o = new TblComment();
+                            o.Name = model.Name;
+                            o.Content = model.Content;
+                            o.NewsId = id;
+                            o.CreateDate = DateTime.Now;
+                            o.IsAd = false;
+                            new TblCommentDao().Create(o);
+                            return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                        }
                     }
+
                 }
-                
+                return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
             }
-            return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+            catch (Exception ex)
+            {
+                logger.Info("Home" + "::TblCommentCreate::" + ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
 
         }
         [AllowAnonymous]
@@ -177,45 +185,62 @@ namespace TkSchoolNews.Controllers
         [ValidateInput(false)]
         public ActionResult Quotation(string usercomment, string quote)
         {
-            TblCommentModel o = new TblCommentModel();
-            o.Content= "<div style='border: 1px solid gray; border-radius:10px;'><blockquote><span><strong>bình luận của&nbsp;<span style='color:red;'>" + usercomment+"</span></strong></span><br>"+quote+"</blockquote></div>";
-            return View(o);
+            try
+            {
+                TblCommentModel o = new TblCommentModel();
+                o.Content = "<div style='border: 1px solid gray; border-radius:10px;'><blockquote><span><strong>bình luận của&nbsp;<span style='color:red;'>" + usercomment + "</span></strong></span><br>" + quote + "</blockquote></div>";
+                return View(o);
+            }
+            
+            catch (Exception ex)
+            {
+                logger.Info("Home" + "::Quotation::" + ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
         }
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Quotation(string metatitle, long id, TblCommentModel model, FormCollection form)
         {
-            const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
-            var secret = ConfigurationManager.AppSettings["SecretKey"];
-            var response = form["g-recaptcha-response"];
-            var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
-
-            var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
-
-            using (var wc = new WebClient())
+            try
             {
-                wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                var json = wc.UploadString(verifyUrl, myParameters);
-                var js = new DataContractJsonSerializer(typeof(CapchaRespond));
-                var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
-                var result = js.ReadObject(ms) as CapchaRespond;
-                if (result != null && result.Success) // SUCCESS!!!
+                const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+                var secret = ConfigurationManager.AppSettings["SecretKey"];
+                var response = form["g-recaptcha-response"];
+                var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
+
+                var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
+
+                using (var wc = new WebClient())
                 {
-                    if (ModelState.IsValid)
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    var json = wc.UploadString(verifyUrl, myParameters);
+                    var js = new DataContractJsonSerializer(typeof(CapchaRespond));
+                    var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                    var result = js.ReadObject(ms) as CapchaRespond;
+                    if (result != null && result.Success) // SUCCESS!!!
                     {
-                        TblComment o = new TblComment();
-                        o.Name = model.Name;
-                        o.Content = model.Content;
-                        o.NewsId = id;
-                        o.CreateDate = DateTime.Now;
-                        o.IsAd = false;
-                        new TblCommentDao().Create(o);
-                        return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                        if (ModelState.IsValid)
+                        {
+                            TblComment o = new TblComment();
+                            o.Name = model.Name;
+                            o.Content = model.Content;
+                            o.NewsId = id;
+                            o.CreateDate = DateTime.Now;
+                            o.IsAd = false;
+                            new TblCommentDao().Create(o);
+                            return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                        }
                     }
                 }
-             }
-            return View();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                logger.Info("Home" + "::Quotation::" + ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
         }
     }
 }
