@@ -2276,6 +2276,7 @@
     <Folder Include="Data\files\" />
     <Folder Include="Data\flash\" />
     <Folder Include="Data\images\" />
+    <Folder Include="Helper\" />
     <Folder Include="Log\" />
     <Folder Include="Scripts\Scripts\" />
     <Folder Include="Views\Base\" />

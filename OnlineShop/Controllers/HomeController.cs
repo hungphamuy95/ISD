@@ -19,22 +19,8 @@ namespace TkSchoolNews.Controllers
     {
         //ghi log hệ thống
         public log4net.ILog logger = log4net.LogManager.GetLogger("TkSchoolNews");
-        protected void SetAlert(string message, string type)
-        {
-            TempData["AlertMessage"] = message;
-            if (type == "success")
-            {
-                TempData["AlertType"] = "alert-success";
-            }
-            else if (type == "warning")
-            {
-                TempData["AlertType"] = "alert-warning";
-            }
-            else if (type == "error")
-            {
-                TempData["AlertType"] = "alert-danger";
-            }
-        }
+
+        #region show trang chủ và thông tin tại trang chủ
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
@@ -51,9 +37,12 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
 
+
+        #region trang chủ tin tức
         [AllowAnonymous]
-        public ActionResult NewsList(int page=1, int pagesize=10)
+        public ActionResult NewsList(int page = 1, int pagesize = 10)
         {
             try
             {
@@ -67,6 +56,10 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
+
+
+        #region chi tiết tin tức
         [AllowAnonymous]
         [HttpGet]
         [ValidateInput(false)]
@@ -86,6 +79,10 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
+
+
+        #region đang sửa
         [AllowAnonymous]
         public ActionResult EventNews(long groupnewsid)
         {
@@ -101,6 +98,11 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+
+        #endregion
+
+
+        #region thông tin liên hệ
         [AllowAnonymous]
         public ActionResult Contact(long groupnewsid)
         {
@@ -116,6 +118,10 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
+
+
+        #region download file
         public void DownloadFile(string filepath, string filename)
         {
             try
@@ -133,6 +139,10 @@ namespace TkSchoolNews.Controllers
                 logger.Info("Home" + "::DonwloadFile::" + ex.Message);
             }
         }
+        #endregion
+
+
+        #region cơ sở vật chất
         [AllowAnonymous]
         public ActionResult Material(long groupnewsid)
         {
@@ -149,10 +159,14 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
+
+
+        #region comment
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
-        
+
         public ActionResult TblCommentCreate(string metatitle, long id, TblCommentModel model, FormCollection form)
         {
             try
@@ -208,7 +222,7 @@ namespace TkSchoolNews.Controllers
                 o.Content = "<div style='border: 1px solid gray; border-radius:10px;'><blockquote><span><strong>bình luận của&nbsp;<span style='color:red;'>" + usercomment + "</span></strong></span><br>" + quote + "</blockquote></div>";
                 return View(o);
             }
-            
+
             catch (Exception ex)
             {
                 logger.Info("Home" + "::Quotation::" + ex.Message);
@@ -259,5 +273,8 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        #endregion
+
+
     }
 }
