@@ -19,8 +19,8 @@ namespace TkSchoolNews.Controllers
         {
             try
             {
-                var list = new TblNewsDraffDao().FindByAll();
-                return View(list);
+                //var list = new TblNewsDraffDao().FindByAll();
+                return View();
             }
             catch (Exception ex)
             {
@@ -28,6 +28,7 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        [Authorize]
         public JsonResult TblNewsDraffList()
             {
             try
@@ -42,7 +43,18 @@ namespace TkSchoolNews.Controllers
                 return Json(JsonRequestBehavior.AllowGet);
             }
         }
-    
+        [Authorize]
+        public JsonResult SearchResult(string searchquery, string cate)
+        {
+            if (searchquery == null || searchquery=="" )
+            {
+                var fullllist = new TblNewsDraffDao().FindByCate(cate);
+                return Json(fullllist, JsonRequestBehavior.AllowGet);
+            }
+            var list = new TblNewsDraffDao().FindByTitle(searchquery, cate);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        [Authorize]
         public JsonResult TblGroupNewsList()
         {
             try
@@ -58,6 +70,20 @@ namespace TkSchoolNews.Controllers
                 return Json(JsonRequestBehavior.AllowGet);
             }
         }
+        [Authorize]
+        public ActionResult TblFileNewsDraffList()
+        {
+            try
+            {
+                return Json(new TblFileDao().FindByModel(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ControllerName + "::TblFileNewsDraffList::" + ex.Message);
+                return Json(JsonRequestBehavior.AllowGet);
+            }
+        }
+        [Authorize]
         public JsonResult TblListFile()
         {
             try
@@ -73,33 +99,50 @@ namespace TkSchoolNews.Controllers
             }
         }
         [Authorize]
-        [HttpPost]
-        public ActionResult TblNewsDraffCreate(string title, TblNewsDraffModel model, List<string> fileattach, string image= "/Images/defaultimage.jpg", string groupname= "TRƯỜNG HỌC", bool ishome=false, bool isevent=false, bool isweek=false)
+        [HttpGet]
+        public ActionResult TblNewsDraffCreate(string returnrurl)
         {
-            try
+            ViewBag.returnurl = returnrurl;
+            return View();
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult TblNewsDraffCreate(TblNewsDraffCreateModel model ,string fileattach, string groupname="TIN TỨC", string hinhanh= @"/Images/defaultimage.jpg", bool ishome=false)
+        {
+
+            try { 
+            if (ModelState.IsValid)
             {
+                
                 TblNewsDraff o = new TblNewsDraff();
                 TblFileNewsDraff obj = new TblFileNewsDraff();
-                o.Title = title;
+                o.Title = model.title;
                 o.GroupNewsId = new TblGroupNewsDao().FindByName(groupname).GroupNewsId;
                 o.ShortContent = model.shortcontent;
                 o.Content = model.content;
-                o.BigImage = image;
+                o.BigImage = hinhanh;
                 o.IsHome = ishome;
-                o.IsEvent = isevent;
-                o.IsWeek = isweek;
+                o.IsEvent = model.isevent;
+                o.IsWeek = model.isweek;
                 o.CreateUser = this.GetUserName();
                 o.CreateDate = DateTime.Now;
-                o.Metatitle = (new Rewrite().RemoveUnicode(title)).Replace(" ","-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
+                o.Metatitle = (new Rewrite().RemoveUnicode(model.title)).Replace(" ", "-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
+                var test = new Rewrite().RemoveUnicode(model.title).ToLower();
+                o.SubTitle = test;
                 new TblNewsDraffDao().Create(o);
-                var res = new TblNewsDraffDao().FindByTitle(title);
-                foreach(var item in fileattach)
+                if (fileattach != "")
                 {
+                    var res = new TblNewsDraffDao().FindByTitleFile(model.title);
                     obj.NewsId = res.NewsId;
-                    obj.FileId = new TblFileDao().FindByName(item).Id;
+                    obj.FileId = new TblFileDao().FindByName(fileattach).Id;
                     new TblFileNewsDraffDao().Create(obj);
                 }
-               return Json(JsonRequestBehavior.AllowGet);
+                SetAlert("tạo thành công", "success");
+                return RedirectToAction("TblNewsDraffListIndex");
+            }
+            return View();
+            
             }
             catch (Exception ex)
             {
@@ -125,15 +168,12 @@ namespace TkSchoolNews.Controllers
         }
         [Authorize]
         [HttpGet]
-        public ActionResult TblNewsDraffUpdate(long id, long? selectedid=null)
+        public ActionResult TblNewsDraffUpdate(long id)
         {
             try
             {
                 var list = new TblNewsDraffDao().FindById(id);
-                ViewBag.groupnews = new SelectList(new TblGroupNewsDao().FindByAll(), "GroupNewsId", "Name", selectedid);
-                ViewBag.file = new SelectList(new TblFileDao().FindByAll(), "Id", "Name", selectedid);
                 ViewBag.FileAttach = new TblFileDao().FindByNewsId(id);
-                ViewBag.cmt = new TblCommentDao().FindByNewsId(id);                     
                 return View(list);
             }
             catch (Exception ex)
@@ -145,27 +185,58 @@ namespace TkSchoolNews.Controllers
         [Authorize]
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult TblNewsDraffUpdate(long id, TblNewsDraffModel model, List<string> fileattach)
+        public ActionResult TblNewsDraffUpdate(long id, TblNewsDraffModel model, string fileattach)
         {
             try
             {
-                TblNewsDraff o = new TblNewsDraff();
-                o.NewsId = id;
-                o.Title = model.title;
-                o.GroupNewsId = model.groupnews;
-                o.ShortContent = model.shortcontent;
-                o.Content = model.content;
-                o.BigImage = model.image;
-                o.IsHome = model.ishome;
-                o.IsEvent = model.isevent;
-                o.IsWeek = model.isweek;
-                o.EditUser = GetUserName();
-                o.EditDate = DateTime.Now;
-                string urlseo= (new Rewrite().RemoveUnicode(model.title)).Replace(" ","-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
-                o.Metatitle = urlseo;
-                new TblNewsDraffDao().Update(o);
-                SetAlert("cập nhật thành công", "success");
-                return RedirectToAction("TblNewsDraffUpdate");
+                if (ModelState.IsValid)
+                {
+                    TblNewsDraff o = new TblNewsDraff();
+                    TblFileNewsDraff obj = new TblFileNewsDraff();
+                    o.NewsId = id;
+                    o.Title = model.title;
+                    o.ShortContent = model.shortcontent;
+                    o.Content = model.content;
+                    o.BigImage = model.image;
+                    o.IsHome = model.ishome;
+                    o.IsEvent = model.isevent;
+                    o.IsWeek = model.isweek;
+                    o.EditUser = GetUserName();
+                    o.EditDate = DateTime.Now;
+                    string urlseo = (new Rewrite().RemoveUnicode(model.title)).Replace(" ", "-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
+                    o.Metatitle = urlseo;
+                    o.SubTitle = new Rewrite().RemoveUnicode(model.title).ToLower();
+                    new TblNewsDraffDao().Update(o);
+                    if (fileattach != "" && fileattach!= "deletefile")
+                    {
+                        var checknewsid = new TblFileNewsDraffDao().FindByNewsId(id);
+                        if (checknewsid == null)
+                        {
+                            var res = new TblNewsDraffDao().FindByTitleFile(model.title);
+                            obj.NewsId = res.NewsId;
+                            obj.FileId = new TblFileDao().FindByName(fileattach).Id;
+                            new TblFileNewsDraffDao().Create(obj);
+                        }
+                        else if (checknewsid != null)
+                    {
+                        var resupdate = new TblNewsDraffDao().FindByTitleFile(model.title);
+                        var findfile = new TblFileNewsDraffDao().FindByNewsId(id);
+                        obj.Id = findfile.Id;
+                        obj.NewsId = resupdate.NewsId;
+                        obj.FileId = new TblFileDao().FindByName(fileattach).Id;
+                        new TblFileNewsDraffDao().Update(obj);
+                    }
+                    }
+                    else if(fileattach== "deletefile")
+                    {
+                        TblFileNewsDraff deletefile = new TblFileNewsDraffDao().FindByNewsId(id);
+                        new TblFileNewsDraffDao().Delete(deletefile);
+                    }
+                    SetAlert("cập nhật thành công", "success");
+                    return RedirectToAction("TblNewsDraffUpdate");
+                }
+                var list = new TblNewsDraffDao().FindById(id);
+                return View(list);
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ namespace TK.Business.Dao
     {
         /// <summary>
         /// Author: Phạm Huy Hùng
-        /// Todo: 
+        /// Todo: tìm theo newsid
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>

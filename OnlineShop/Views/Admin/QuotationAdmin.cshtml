@@ -4,27 +4,28 @@
     ViewBag.Title = "QUẢN LÝ BÌNH LUẬN";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>bình luận của bạn</th>
+                    <td>
+                        <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
+                        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td><input type="submit" value="bình luận" class="btn btn-info" /></td>
+                </tr>
+            </table>
+        </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="table-responsive">
-        <table class="table">
-            <tr>
-                <th>bình luận của bạn</th>
-                <td>
-                    <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
-                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-                </td>
-            </tr>
-            <tr>
-                <th></th>
-                <td><input type="submit" value="bình luận" class="btn btn-info" /></td>
-            </tr>
-        </table>
-    </div>
-    
-}
+    }
+</div>
 <script>
     var editor3 = CKEDITOR.replace('txtComment', {
             extraPlugins: 'youtube',

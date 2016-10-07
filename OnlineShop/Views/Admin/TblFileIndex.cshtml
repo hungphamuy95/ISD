@@ -3,58 +3,74 @@
     ViewBag.Title = "quản trị tệp";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <span style="color:red;">danh sách tệp</span></h4>
-<div ng-app="myApp" ng-controller="myCtrl">
-    <div class="row">
-        <div class="col-lg-6">
-            <table class="table">
-                <tr class="success">
-                    <th><label>tìm kiếm tệp</label></th>
-                    <td><input type="text" name="searchname" ng-model="searchText.$" /><br /></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <table cellpadding="12" class="table table-bordered table-hover">
-        <tr>
-            <th>mã số</th>
-            <th>tên tệp</th>
-            <th>xóa</th>
-        </tr>
-        <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.Id}}">
-            <td>{{uni.Id}}</td>
-            @{ 
-                var url = Url.Action("DownloadFile", "Admin", new { @filepath = "{{uni.Directory}}", @filename="{{uni.Name}}"});
-                url = HttpUtility.UrlDecode(url);
-                }
-            
-            <td><a data-ng-href="@url">{{uni.Name}}</a></td>
-            <td><button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button></td>
-        </tr>
-    </table>
-    <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
-    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-    </button>
-    <label>&nbsp;số bản ghi&nbsp;</label><input type="text" ng-model="pageSize" size="1" />
-    {{currentPage+1}}/{{numberOfPages()}}
-    <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-    </button>
-</div>
-<br />
-@using (Html.BeginForm("TblFileCreate", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-   <table class="table table-bordered">
-       <tr class="info">
-           <th>chọn tệp</th>
-           <td><input type="file" name="file" ng-model="file"/></td>
-       </tr>
-    </table>
-    <input type="submit" value="tải lên" class="btn btn-default" ng-click="create(file,content)"/>
+<div class="container">
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">danh sách tệp</span>
     <br />
-}
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <div class="row">
+            <div class="col-lg-6">
+                <br />
+                <form role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText.$"  id="txtsearch" />
+                        <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        <br />
+        <table cellpadding="12" class="table table-bordered table-hover">
+            <tr>
+                <th>mã số</th>
+                <th>tên tệp</th>
+                <th>xóa</th>
+            </tr>
+            <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.Id}}">
+                <td>{{uni.Id}}</td>
+                @{
+                    var url = Url.Action("DownloadFile", "Admin", new { @filepath = "{{uni.Directory}}", @filename = "{{uni.Name}}" });
+                    url = HttpUtility.UrlDecode(url);
+                }
+
+                <td><a data-ng-href="@url">{{uni.Name}}</a></td>
+                <td><button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button></td>
+            </tr>
+        </table>
+        <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
+        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+        <label>&nbsp;số bản ghi&nbsp;</label>
+        <select ng-model="pageSize">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        {{currentPage+1}}/{{numberOfPages()}}
+        <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+    </div>
+    <br />
+    
+    @using (Html.BeginForm("TblFileCreate", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <table class="table">
+            <tr>
+                <th>chọn tệp</th>
+                <td><input type="file" name="file" ng-model="file" required /></td>
+            </tr>
+        </table>
+        <input type="submit" value="tải lên" class="btn btn-default" ng-click="create(file,content)" />
+        <br />
+    }
+    <br />
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">danh sách tệp</span>
+    <br />&nbsp;
+</div>
 <script>
     /*
     *author: Phạm Huy Hùng

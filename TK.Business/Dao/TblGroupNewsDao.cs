@@ -69,7 +69,7 @@ namespace TK.Business.Dao
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public IEnumerable<TblGroupNew> FindByAll()
+        public List<TblGroupNew> FindByAll()
         {
             try
             {

@@ -1,160 +1,171 @@
 ﻿@using TK.Business.Model;
-@model List<TblNewsDraffModel>
 @{
     ViewBag.Title = "quản trị tin tức";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <span style="color:red;">danh sách tin tức</span></h4>
-<div ng-app="myApp" ng-controller="myCtrl">
-    <div class="row">
-        <div class="col-lg-6">
-            <table class="table">
-                <tr class="success">
-                    <th><label>tìm theo tất cả</label></th>
-                    <td><input type="text" name="searchname" ng-model="searchText.$" /><br /></td>
-                </tr>
-                <tr class="danger">
-                    <th><label>tìm theo tên</label></th>
-                    <td><input type="text" name="searchname" ng-model="searchText.Name" /></td>
-                </tr>
-                <tr class="info">
-                    <th>tìm theo loại tin</th>
-                    <td><input type="checkbox" name="ishome" value="ishome" ng-model="searchText.ishome"/>trang chủ&nbsp;<input type="checkbox" name="isevent" value="isevent" ng-model="searchText.isevent"/>sự kiện&nbsp;<input type="checkbox" name="isweek" value="isweek" ng-model="searchText.isweek"/>tuần</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    
-    <table cellpadding="12" class="table table-bordered table-hover">
-        <tr>
-            <th>id</th>
-            <th>tiêu đề</th>
-            <th>nhóm tin</th>
-            <th>trang chủ</th>
-            <th>sự kiện</th>
-            <th>tuần</th>
-            <th>hành động</th>
-        </tr>
-        <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.id}}">
-        <td>
-            {{uni.id}}
-        </td>
-            <td>
-                {{uni.title}}
-
-            </td>
-            <td>
-                @*<span ng-bind-html="uni.ShortContent"></span>*@
-                {{uni.groupname}}
-            </td>
-            <td>
-                {{uni.ishome?'có':'không'}}
-            </td>
-            <td>
-                {{uni.isevent?'có':'không'}}
-            </td>
-            <td>
-                {{uni.isweek?'có':'không'}}
-            </td>
-            <td>
-                @{ 
-                    var url = Url.Action("TblNewsDraffUpdate", "Admin", new { @id = "{{uni.id}}" });
-                    url = HttpUtility.UrlDecode(url);
-                }
-                <a data-ng-href="@url" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
-                &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.id)"><span class="glyphicon glyphicon-trash"></span></button>
-            </td>
-        </tr>
-    </table>
-    <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;"/></div>
-    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-    </button>
-    <label>&nbsp;số bản ghi&nbsp;</label><input type="text" ng-model="pageSize" size="1" />
-    {{currentPage+1}}/{{numberOfPages()}}
-    <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-    </button>
+<div class="container">
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">danh sách tin tức</span>
     <br /><br />
-    <button class="btn btn-info" id="tao">tạo mới</button>
-    <div class="row" id="taomoi" style="display:none;">
-        <div class="col-lg-12">
-            <form name="Form" onsubmit="return validate()" action="Admin/TblNewsDraffCreate" method="get">
-                <table class="table table-bordered">
-                    <tr class="info">
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <div class="row">
+            <div class="col-lg-6">
+                <form role="search">
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchcontent" id="txtsearch" />
+                        <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
+                    </div>
+                    <br />
+                    <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="All" />tất cả</label>
+                    <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsHome" /> trang chủ</label>
+                    <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsEvent" /> sự kiện</label>
+                    <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsWeek" /> tin tức đã phát hành</label>
+                    <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="14" />tin tức</label>
+                    <br /><br />
+                </form>
+
+            </div>
+
+        </div>
+        <div ng-show="listsearch">
+            <div ng-show="!searchres.length" class="text-danger">
+                <h4>không tìm thấy kết quả nào</h4>
+            </div>
+            <div ng-show="searchres.length">
+                <table cellpadding="12" class="table table-bordered table-hover">
+                    <tr>
+                        <th>mã tin</th>
                         <th>tiêu đề</th>
-                        <td><input type="text" name="id" ng-model="newstitle" required /></td>
-                    </tr>
-                    <tr class="info">
-                        <th>nhóm tin</th>
-                        <td><select ng-model="newsgroup">
-                            <option ng-repeat="x in listgroup">{{x.Name}}</option>
-                            </select></td>
-                    </tr>
-                    <tr class="info">
-                        <th>nội dung sơ lược</th>
-                        <td><textarea ng-model="newsshortcontent" id = "txtDescript1" data-ck-editor required></textarea></td>
-                    </tr>
-                    <tr class="info">
-                        <th>nội dung chính</th>
-                        <td><textarea ng-model="newscontent" id = "txtDescript2" data-ck-editor required></textarea>{{newscontent}}
-                    </tr>
-                    <tr class="info">
-                        <th>hình ảnh</th>
-                        <td><input type="text" name="fax" id = "txtImage" ng-model="newsimage" required />
-                        <button id="btnselect">chọn ảnh</button></td>
-                    </tr>
-                    <tr class="info">
+                        @*<th>nhóm tin</th>*@
                         <th>trang chủ</th>
-                        <td><input type="checkbox" name="email" ng-model="newsishome" required /></td>
-                    </tr>
-                    <tr class="info">
                         <th>sự kiện</th>
-                        <td><input type="checkbox" name="status" ng-model="newsisevent" /></td>
+                        <th>tuần</th>
+                        <th>hành động</th>
                     </tr>
-                    <tr class="info">
-                        <th>bài viết tuần</th>
-                        <td><input type="checkbox" name="address" ng-model="newsisweek" required  /></td>
-                    </tr>
-                    <tr class="info">
-                        <th>tệp đính kèm 1</th>
+                    <tr ng-repeat="sub in searchres | filter:searchText1 | startFrom:currentPage1*pageSize1 | limitTo:pageSize1" id="row_{{sub.NewsId}}">
                         <td>
-                            <select ng-model="fileattach[0]">
-                                <option ng-repeat="p in listfile">{{p.Name}}</option>
-                            </select>&nbsp;<span style="color:red;">bạn phải chọn lần lượt từng file upload, load lại trang để reset</span>
+                            {{sub.NewsId}}
                         </td>
-                    </tr>
-                    <tr class="info">
-                        <th>tệp đính kèm 2</th>
                         <td>
-                            <select ng-model="fileattach[1]">
-                                <option ng-repeat="p in listfile">{{p.Name}}</option>
-                            </select>&nbsp;<span style="color:red;">bạn phải chọn lần lượt từng file upload, load lại trang để reset</span>
+                            {{sub.Title}}
                         </td>
-                    </tr>
-                    <tr class="info">
-                        <th>tệp đính kèm 3</th>
+                        @*<td>
+                                {{sub.Name}}
+                            </td>*@
                         <td>
-                            <select ng-model="fileattach[2]">
-                                <option ng-repeat="p in listfile">{{p.Name}}</option>
-                            </select>&nbsp;<span style="color:red;">bạn phải chọn lần lượt từng file upload, load lại trang để reset</span>
+                            {{sub.IsHome?'có':'không'}}
+                        </td>
+                        <td>
+                            {{sub.IsEvent?'có':'không'}}
+                        </td>
+                        <td>
+                            {{sub.IsWeek?'có':'không'}}
+                        </td>
+                        <td>
+                            @{
+                                var urlsearch = Url.Action("TblNewsDraffUpdate", "Admin", new { @id = "{{sub.NewsId}}" });
+                                urlsearch = HttpUtility.UrlDecode(urlsearch);
+                            }
+                            <a data-ng-href="@urlsearch" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                            &nbsp;<button class="btn btn-danger" ng-click="DeleteDetail(sub.NewsId)" ng-disabled="sub.IsHome==true || sub.IsEvent==true"><span class="glyphicon glyphicon-trash"></span></button>
+                            @*&nbsp;<a class="btn btn-primary" ng-disabled="sub.ishome==true||sub.isevent==true" data-ng-href="#"><span class="glyphicon glyphicon-comment"></span></a>*@
                         </td>
                     </tr>
                 </table>
-            </form>
-            <input type="submit" name="submit" class="btn btn-primary" ng-click="create(newstitle, newsgroup, newsshortcontent, newscontent, newsimage, newsishome, newsisevent, newsisweek, fileattach)" value="tạo" />
+                <button ng-disabled="currentPage1 == 0" ng-click="currentPage1=currentPage1-1" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </button>
+                <label>&nbsp;số bản ghi&nbsp;</label>
+                <select ng-model="pageSize1">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+                {{currentPage1+1}}/{{numberOfPages1()}}
+                <button ng-disabled="currentPage1 >= searchres.length/pageSize1 - 1" ng-click="currentPage1=currentPage1+1" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </div>
         </div>
-        <br />
+        <div ng-show="listloadind">
+            <table cellpadding="12" class="table table-bordered table-hover">
+                <tr>
+                    <th>mã tin</th>
+                    <th>tiêu đề</th>
+                    @*<th>nhóm tin</th>*@
+                    <th>trang chủ</th>
+                    <th>sự kiện</th>
+                    <th>tuần</th>
+                    <th>sửa | xóa | bình luận</th>
+                </tr>
+                <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.id}}">
+                    <td>
+                        {{uni.id}}
+                    </td>
+                    <td>
+                        {{uni.title}}
+
+                    </td>
+                    @*<td>
+                            <span ng-bind-html="uni.ShortContent"></span>
+                            {{uni.groupname}}
+                        </td>*@
+                    <td>
+                        {{uni.ishome?'có':'không'}}
+                    </td>
+                    <td>
+                        {{uni.isevent?'có':'không'}}
+                    </td>
+                    <td>
+                        {{uni.isweek?'có':'không'}}
+                    </td>
+                    <td>
+                        @{
+                            var url = Url.Action("TblNewsDraffUpdate", "Admin", new { @id = "{{uni.id}}" });
+                            url = HttpUtility.UrlDecode(url);
+                        }
+                        <a data-ng-href="@url" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                        &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.id)" ng-disabled="uni.ishome==true || uni.isevent==true"><span class="glyphicon glyphicon-trash"></span></button>
+                        &nbsp;<a class="btn btn-primary" ng-disabled="uni.ishome==true||uni.isevent==true" data-ng-href="#"><span class="glyphicon glyphicon-comment"></span></a>
+                    </td>
+                </tr>
+            </table>
+
+            <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
+            <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </button>
+            <label>&nbsp;số bản ghi&nbsp;</label>
+            <select ng-model="pageSize">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+            {{currentPage+1}}/{{numberOfPages()}}
+            <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+        </div>
+        <br /><br />
+        <a href="@Url.Action("TblNewsDraffCreate","Admin")" class="btn btn-info">tạo mới</a>
+
     </div>
 </div>
 <br />
 <script>
+    
     /*
     *author: Phạm Huy Hùng
     *todo: thiết lập module
     */
     var app = angular.module("myApp", ['ngSanitize']);
     app.controller("myCtrl", function ($scope, $http, $window) {
+        $scope.listsearch = false;
+        $scope.listloadind = true;
+        $scope.title = false;
+        $scope.group = false;
         $scope.loading = true;
         $scope.fileattach = [];
             $http({
@@ -170,30 +181,59 @@
                 }
                 $scope.loading = false;
             });
+            $scope.sot = function (_searchcontent, _category) {
+                $http({
+                    method: "POST",
+                    url: "/Admin/SearchResult",
+                    type: "json",
+                    data: { searchquery: _searchcontent, cate: _category}
+                }).
+            then(function (serchresult) {
+                $scope.searchres = serchresult.data;
+                $scope.currentPage1 = 0;
+                $scope.pageSize1 = 10;
+                $scope.numberOfPages1 = function () {
+                    return Math.ceil($scope.searchres.length / $scope.pageSize1);
+                }
+                
+                $scope.listloadind = false;
+                $scope.listsearch = true;
+            });
+            };
 
         /*
     *author: Phạm Huy Hùng
     *todo: post dữ liệu
     */
-            $scope.create = function (_title, _group, _shortcontent, _content, _image, _ishome, _isevent, _isweek, _fileattach) {
-                var ckshortcontent = CKEDITOR.instances.txtDescript1.getData();
-                var ckcontent = CKEDITOR.instances.txtDescript2.getData();
-                $scope._fileattach = [];
-            $http({
-                method: "POST",
-                url: "/Admin/TblNewsDraffCreate",
-                type: "json",
-                data: { title: _title, groupname: _group, shortcontent: ckshortcontent, content: ckcontent, image: _image, ishome: _ishome, isevent: _isevent, isweek: _isweek, fileattach: _fileattach}
-            }).then(function () {
-                $http({
-                    method: "POST",
-                    url: "/Admin/TblNewsDraffList"
-                }).then(function (res) {
-                    $scope.unit = res.data;
-                });
-                $window.alert("tạo thành công");
-            });
-        };
+        //    $scope.create = function (_title, _group, _shortcontent, _content, _image, _ishome, _isevent, _isweek, _fileattach) {
+        //        var _newstitle = $("#title").val();
+                
+        //        var _newsgroup = _group;
+        //        var ckshortcontent = CKEDITOR.instances.txtDescript1.getData();
+        //        var ckcontent = CKEDITOR.instances.txtDescript2.getData();
+        //        $scope._fileattach = [];
+        //        if (_newstitle.length == 0) {
+        //            $scope.title = true;
+        //        }
+        //        if (_newsgroup.length == 0) {
+        //            $scope.group = true;
+        //        }
+        //    $http({
+        //        method: "POST",
+        //        url: "/Admin/TblNewsDraffCreate",
+        //        type: "json",
+        //        data: { title: _title, groupname: _group, shortcontent: ckshortcontent, content: ckcontent, image: _image, ishome: _ishome, isevent: _isevent, isweek: _isweek, fileattach: _fileattach}
+        //    }).then(function () {
+        //        $http({
+        //            method: "POST",
+        //            url: "/Admin/TblNewsDraffList"
+        //        }).then(function (res) {
+        //            $scope.unit = res.data;
+        //            $window.alert("tạo thành công");
+        //        });
+                
+        //    });
+        //};
         /*author: Phạm Huy Hùng
         * todo: xóa dữ liệu
         */
@@ -206,9 +246,34 @@
                         type: "json",
                         data:{id: _id}
                     }).then(function () {
-                        $(document).ready(function () {
-                            $("#row_" + _id + "").remove();
-                        });
+                        $http({
+                            method: "POST",
+                            url: "/Admin/TblNewsDraffList"
+                        }).
+             then(function (responddelete) {
+                 $scope.unit = responddelete.data;
+                 $scope.currentPage = 0;
+                 $scope.pageSize = 10;
+                 $scope.numberOfPages = function () {
+                     return Math.ceil($scope.unit.length / $scope.pageSize);
+                 }
+                 $scope.loading = false;
+             });
+                    });
+                }
+            }
+            $scope.DeleteDetail = function (_id) {
+                var delunit = $window.confirm("bạn có chắc muốn xóa bản ghi này");
+                if (delunit) {
+                    $http({
+                        method: "POST",
+                        url: "/Admin/TblNewsDraffDelete",
+                        type: "json",
+                        data: { id: _id }
+                    }).then(function () {
+                       
+                        $("#row_" + _id + "").remove();
+                        
                     });
                 }
             }

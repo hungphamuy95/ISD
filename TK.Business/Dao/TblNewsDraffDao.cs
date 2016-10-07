@@ -51,7 +51,7 @@ namespace TK.Business.Dao
             {
                 using(TkSchoolDbContext db = new TkSchoolDbContext())
                 {
-                    var query = (from groupnews in db.TblGroupNews.AsEnumerable() join news in db.TblNewsDraffs.AsEnumerable() on groupnews.GroupNewsId equals news.GroupNewsId where news.NewsId==id select new TblNewsDraffModel { id = news.NewsId, title = news.Title, groupname = groupnews.Name, image=news.BigImage, shortcontent= news.ShortContent, content= news.Content , ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek ,createdate=news.CreateDate}).SingleOrDefault();
+                    var query = (from groupnews in db.TblGroupNews.AsEnumerable() join news in db.TblNewsDraffs.AsEnumerable() on groupnews.GroupNewsId equals news.GroupNewsId where news.NewsId==id select new TblNewsDraffModel { id = news.NewsId, title = news.Title, groupnewsid= news.GroupNewsId, image=news.BigImage, shortcontent= news.ShortContent, content= news.Content , ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek ,createdate=news.CreateDate}).SingleOrDefault();
                     return query;
                 }                   
             }
@@ -80,7 +80,7 @@ namespace TK.Business.Dao
                 using (TkSchoolDbContext db = new TkSchoolDbContext())
                 {
 
-                    var query = from groupnews in db.TblGroupNews.AsEnumerable() join news in db.TblNewsDraffs.AsEnumerable() on groupnews.GroupNewsId equals news.GroupNewsId select new TblNewsDraffModel {id=news.NewsId, title = news.Title, groupname = groupnews.Name, ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek };
+                    var query = from groupnews in db.TblGroupNews.AsEnumerable() join news in db.TblNewsDraffs.AsEnumerable() on groupnews.GroupNewsId equals news.GroupNewsId select new TblNewsDraffModel {id=news.NewsId, title = news.Title, ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek };
                     return query.ToList();
                     
                 }
@@ -167,16 +167,14 @@ namespace TK.Business.Dao
                 using (TkSchoolDbContext db = new TkSchoolDbContext())
                 {
                     var res = db.TblNewsDraffs.Where(s => s.NewsId == obj.NewsId).SingleOrDefault();
-                    res.GroupNewsId = obj.GroupNewsId;
                     res.Title = obj.Title;
                     res.ShortContent = obj.ShortContent;
                     res.Content = obj.Content;
                     res.BigImage = obj.BigImage;
                     res.SmaallImage = obj.SmaallImage;
-                    res.IsHome = obj.IsHome;
-                    res.IsEvent = obj.IsEvent;
                     res.IsWeek = obj.IsWeek;
                     res.Metatitle = obj.Metatitle;
+                    res.SubTitle = obj.SubTitle;
                     db.SaveChanges();
                 }
             }

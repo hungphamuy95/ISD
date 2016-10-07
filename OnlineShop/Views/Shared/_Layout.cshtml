@@ -9,10 +9,10 @@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <script src="~/Scripts/respond.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     @*<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -113,6 +113,12 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+                @if (TempData["AlertMessage"] != null)
+                {
+                    <div class="alert @TempData["AlertType"]" id="alertbox">
+                        @TempData["AlertMessage"]
+                    </div>
+                }
                 @RenderBody()
                 @RenderPage("CkSource.cshtml")
             </div>

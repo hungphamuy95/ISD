@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TK.Business.Data;
 using System.Data.SqlClient;
+using TK.Business.Model;
 
 namespace TK.Business.Dao
 {
@@ -88,6 +89,34 @@ namespace TK.Business.Dao
                 else
                 {
                     throw new Exception("TblFiletDao::FindByAll::" + ex.InnerException.Message);
+                }
+            }
+        }
+        /// <summary>
+        /// Author: Phạm Huy Hùng
+        /// Todo: tạo list gồm các đối tượng
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public IEnumerable<TblFileModel> FindByModel()
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    var query = (from file in db.TblFiles.AsEnumerable() join filenews in db.TblFileNewsDraffs.AsEnumerable() on file.Id equals filenews.FileId select new TblFileModel { filename = file.Name }).Distinct();
+                    return query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                {
+                    throw new Exception("TblFileDao::FindByModel::" + ex.Message);
+                }
+                else
+                {
+                    throw new Exception("TblFiletDao::FindByModel::" + ex.InnerException.Message);
                 }
             }
         }
@@ -169,13 +198,13 @@ namespace TK.Business.Dao
                 }
             }
         }
-        public IEnumerable<TblFile> FindByNewsId(long newsid)
+        public TblFile FindByNewsId(long newsid)
         {
             try
             {
                 using (TkSchoolDbContext db = new TkSchoolDbContext())
                 {
-                    return db.Database.SqlQuery<TblFile>("select * from TblFile inner join TblFileNewsDraff on TblFile.Id=TblFileNewsDraff.FileId where TblFileNewsDraff.NewsId=@NewsId",new SqlParameter("NewsId",newsid)).ToList();
+                    return db.Database.SqlQuery<TblFile>("select * from TblFile inner join TblFileNewsDraff on TblFile.Id=TblFileNewsDraff.FileId where TblFileNewsDraff.NewsId=@NewsId",new SqlParameter("NewsId",newsid)).SingleOrDefault();
                 }
             }
             catch (Exception ex)

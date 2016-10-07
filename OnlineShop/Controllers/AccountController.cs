@@ -28,17 +28,32 @@ namespace TkSchoolNews.Controllers
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult Login(LoginModel model)
         {
-            if(ModelState.IsValid && Membership.ValidateUser(model.username, model.password))
+            if(ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(model.username, model.rememberme);
-                var usersession = new UserLogin();
-                usersession.username = new TblUserDao().FindByName(model.username).Username;
-                Session.Add(CommonConstants.USER_SESSION, usersession.username);
-                return RedirectToAction("Index", "Admin");
+                var o = new TblUserDao().FindByUserName(model.username);
+                    if (o == null)
+                {
+                    ModelState.AddModelError(string.Empty, "tên đăng nhập không tồn tại");
+                    return View();
+                }
+                    else
+                {
+                    if (Membership.ValidateUser(model.username, model.password))
+                    {
+                        FormsAuthentication.SetAuthCookie(model.username, model.rememberme);
+                        var usersession = new UserLogin();
+                        usersession.username = new TblUserDao().FindByName(model.username).Username;
+                        Session.Add(CommonConstants.USER_SESSION, usersession.username);
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    ModelState.AddModelError(string.Empty, "mật khẩu không đúng");
+                    return View();
+                }
+                
             }
             else
             {
-                return RedirectToAction("Index", "Error");
+                return View();
             }
         }
         public ActionResult Logoff()

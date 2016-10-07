@@ -2,146 +2,140 @@
 @using TK.Business.Data
 @model TblNewsDraffModel
 @{
-    List<TblFile> file = ViewBag.FileAttach;
-    List<TblComment> comm = (List<TblComment>)ViewBag.cmt;
+    TblFile file = (TblFile)ViewBag.FileAttach;
     ViewBag.Title = "cập nhật tin tức";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a> <strong>>></strong> <span style="color:red;">cập nhật tin tức</span></h4>
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">nội dung</a></li>
-    <li><a data-toggle="tab" href="#menu1">chỉnh sửa</a></li>
-</ul>
-<div class="tab-content">
+@{ var newsid = Model.id;}
+<div class="container">
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">cập nhật tin tức</span>
+    <br /><br /><br />
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">chỉnh sửa</a></li>
+        <li><a data-toggle="tab" href="#menu1">nội dung</a></li>
+    </ul>
+    <div class="tab-content">
+        <br />
 
+        <div id="menu1" class="tab-pane fade">
+            <div class="row">
 
-    <div id="home" class="tab-pane fade in active">
-        <div class="row">
-            <div class="col-lg-8" style="border:1px darkgrey solid;">
-                <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
-                <h3>@Model.title</h3>
-                <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.shortcontent))</span><br />
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
-                @{
-                    if (file == null)
-                    {
-                        <div></div>
-                    }
-                    else
-                    {
-                        foreach (var it in file)
+                <div class="col-lg-8" style="border:1px darkgrey solid; border-radius:10px;">
+                    <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
+                    <h3>@Model.title</h3>
+                    <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.shortcontent))</span><br />
+                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
+                    @{
+
+                        if (file == null)
                         {
-                            <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = it.Directory, @filename = it.Name }))">@it.Name</a><p></p>
+                            <div></div>
+                        }
+                        else
+                        {
+                            
+                                <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
+                            
                         }
                     }
-                }
-                <hr />
-                <h4>Quản lý bình luận</h4>
-                @if (comm == null)
-            {
-                    <span style="color:black;">Hãy trở thành người đầu tiên bình luận cho bài viết này</span>
-                }
-                else
-                {
-                    int i = 1;
-                    foreach (var item in comm)
-                    {
-                        <div class="row" style="border:1px solid gray; border-radius:10px;" id="row_@item.Id">
-                            <div class="col-lg-12" style="height:30px; background: linear-gradient(#334d80, #546994); border:1px solid white; border-top-right-radius:10px;border-top-left-radius:10px;"><span style="float:left; color:white;">@Convert.ToDateTime(item.CreateDate).ToString("dd/MM/yyyy")</span><span style="float:right;color:white; font-size:15pt;">
-                                #@(i++)</span></div>
-                            <div class="col-lg-12" style="height:30px; border-bottom:1px solid gray;"><span style="font-size:12pt;">Bình luận bởi: <span style="color:red;">@item.Name</span></span>&nbsp;<span>@(item.IsAd.GetValueOrDefault(true)?"quản trị viên":"")</span></div><hr />
-                            <div class="col-lg-12">@Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Content))</div>
-                            <div class="col-lg-12">
-                                <buton class="btn btn-danger" style="float:right;">
-                                    @Ajax.ActionLink(" ", "TblCommentDelete", "Admin", new { @id = item.Id }, new AjaxOptions
-                           {
-                               Confirm = "bạn có muốn xóa bình luận này?",
-                               OnComplete = "$('#row_" + @item.Id + "').remove();",
-                               HttpMethod = "Delete"
-                           }, new { @class = "glyphicon glyphicon-trash", @style="color:white; font-size:20px;" })
-                                </buton>
-                            <a href="@Url.Action( "QuotationAdmin", "Admin", new { @quote=item.Content, @usercomment=item.Name, @id = Model.id })"><img src="~/Images/quote.png" style="float:right;" height="40" width="50" class="btn btn-default" /></a></div><br />&nbsp;
-                        </div>
-                        <br />
-                    }
+                    <hr />
+                </div>
 
-                }
-                @using (Html.BeginForm("TblCommentAdminCreate", "Admin", new { @newsid = Model.id}))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="table-responsive">
+            </div>
+        </div>
+        <!--update nội dung tin tức-->
+        <div id="home" class="tab-pane fade in active">
+            <br />
+            <div class="panel panel-primary" ng-app="myApp" ng-controller="myCtrl">
+                <div class="panel-heading"><h4>cập nhật tin tức</h4></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm())
+            {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.id)
                         <table class="table">
                             <tr>
-                                <th>bình luận của bạn</th>
+                                <th>tiêu đề</th>
                                 <td>
-                                    <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Comment, new { @id = "txtComment" })
-                                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                                    <div class="col-xs-4">
+                                        @Html.TextBoxFor(model => model.title, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th></th>
-                                <td><input type="submit" value="bình luận" class="btn btn-info" /></td>
+                                <th>nội dung sơ lược</th>
+                                <td>
+                                    @Html.TextAreaFor(model => model.shortcontent, new { htmlAttributes = new { @class = "form-control", @value = Model.shortcontent }, @id = "txtDescript1" })
+                                    @Html.ValidationMessageFor(model => model.shortcontent, "", new { @class = "text-danger" })
+                                </td>
                             </tr>
+                            <tr>
+                                <th>nội dung chính</th>
+                                <td>
+                                    @Html.TextAreaFor(model => model.content, new { htmlAttributes = new { @class = "form-control", @value = Model.content }, @id = "txtDescript2" })
+                                    @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>ảnh</th>
+                                <td>
+                                    <div class="col-xs-5">
+                                        @Html.TextBoxFor(model => model.image, new { @class = "form-control", @id = "txtImage" })
+
+                                        @Html.ValidationMessageFor(model => model.image, "", new { @class = "text-danger" })
+                                    </div><button id="btnselect" class="btn btn-success">chọn ảnh</button><br />
+                                </td>
+                            </tr>
+                            @if (Model.groupnewsid == 14)
+                            {
+                                <tr>
+                                    <th>phát hành</th>
+                                    <td>@Html.CheckBoxFor(model => model.isweek)</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th>phát hành</th>
+                                    <td>@Html.CheckBoxFor(model => model.isweek, new { @disabled = "disabled" })</td>
+                                </tr>
+                            }
+                            <tr>
+                                    <th>tệp đính kèm</th>
+                                    <td>
+                                        <div class="col-lg-3">
+                                            <p ng-model="selectoption"></p>
+                                            <select name="fileattach" class="form-control" ng-model="defaultvalue">
+                                                <option value="" selected>---chọn---</option>
+                                                <option ng-selected="@newsid==defaultvalue" ng-repeat="p in listfile">{{p.Name}}</option>
+                                                <option value="deletefile">---xóa file---</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
                         </table>
-                    </div>
-                }
+                        <input type="submit" value="cập nhật" class="btn btn-info" />
+                        <br />
+                       }
+                </div>
             </div>
-        </div>
+        </div>&nbsp;
+        <!--/update nội dung tin tức-->
     </div>
-
-
-    <div id="menu1" class="tab-pane fade">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.id)
-            <table class="table table-bordered">
-                <tr class="info">
-                    <th>tiêu đề</th>
-                    <td>@Html.TextBoxFor(model => model.title, new { htmlAttributes = new { @class = "form-control", @value = Model.title } })</td>
-                </tr>
-                <tr class="info">
-                    <th>tên nhóm</th>
-                    <td class="danger" style="border:1px solid red">@Html.DropDownListFor(model => model.groupnews, null, Model.groupnews)</td>
-                </tr>
-                <tr class="info">
-                    <th>nội dung sơ lược</th>
-                    <td>@Html.TextAreaFor(model => model.shortcontent, new { htmlAttributes = new { @class = "form-control", @value = Model.shortcontent }, @id = "txtDescript1" })</td>
-                </tr>
-                <tr class="info">
-                    <th>nội dung chính</th>
-                    <td>@Html.TextAreaFor(model => model.content, new { htmlAttributes = new { @class = "form-control", @value = Model.content }, @id = "txtDescript2" })</td>
-                </tr>
-                <tr class="info">
-                    <th>ảnh</th>
-                    <td>
-                        @Html.TextBoxFor(model => model.image, new { htmlAttributes = new { @class = "form-control", @value = Model.image }, @id = "txtImage" })
-                        <button id="btnselect">chọn ảnh</button>
-                    </td>
-                </tr>
-                <tr class="info">
-                    <th>trang chủ</th>
-                    <td>@Html.CheckBoxFor(model => model.ishome)</td>
-                </tr>
-                <tr class="info">
-                    <th>sự kiện</th>
-                    <td>@Html.CheckBoxFor(model => model.isevent)</td>
-                </tr>
-                <tr class="info">
-                    <th>tuần</th>
-                    <td>@Html.CheckBoxFor(model => model.isweek)</td>
-                </tr>
-                @*<tr class="info">
-                    <th>tệp đính kèm</th>
-                    <td>@Html.DropDownListFor(model=>model.file, null, Model.file)</td>
-                </tr>*@
-            </table>
-            <input type="submit" value="cập nhật" class="btn btn-info" />
-            <br />
-        }
-    </div>&nbsp;
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">cập nhật tin tức</span>
+<br />&nbsp;
 </div>
 <script>
+    var app = angular.module("myApp", ['ngSanitize']);
+    app.controller("myCtrl", function ($scope, $http, $window) {
+        $http({
+            method: "POST",
+            url: "/Admin/TblListFile"
+        }).then(function (re) {
+            $scope.listfile = re.data;
+        });
+    });
     var editor3 = CKEDITOR.replace('txtComment', {
             extraPlugins: 'youtube',
             uiColor: '#14B8C4',
@@ -159,7 +153,8 @@
             smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
             smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif','happens.png'],
         smiley_descriptions:[':adore:',':boom:',':ah:',':amazed:',':angry:',':badsmelly:']
-        });
+    });
+
 </script>
 
 

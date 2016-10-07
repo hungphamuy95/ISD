@@ -3,7 +3,7 @@
 @model TblCommentModel
 @{
     TblNewsDraff data = ViewBag.NewsDetail;
-    List<TblFile> file = (List<TblFile>)ViewBag.FileAttach;
+    TblFile file = (TblFile)ViewBag.FileAttach;
     List<TblComment> comm = (List<TblComment>)ViewBag.cmt;
     ViewBag.Title =data.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,10 +24,9 @@
                 }
                 else
                 {
-                    foreach (var item in file)
-                    {
-                        <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = item.Directory, @filename = item.Name }))">@item.Name</a><p></p>
-                    }
+                    
+                        <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
+                    
                 }
             }
             <br />

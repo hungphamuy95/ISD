@@ -124,13 +124,13 @@ namespace TK.Business.Dao
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        public void Delete(long id)
+        public void Delete(TblFileNewsDraff o)
         {
             try
             {
                 using (TkSchoolDbContext db = new TkSchoolDbContext())
                 {
-                    var res = db.TblFileNewsDraffs.Where(x => x.Id == id).SingleOrDefault();
+                    var res = db.TblFileNewsDraffs.Where(x => x.Id == o.Id).SingleOrDefault();
                     db.TblFileNewsDraffs.Remove(res);
                     db.SaveChanges();
                 }

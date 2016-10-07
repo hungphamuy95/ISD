@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using TK.Business.Data;
 using System.Data.SqlClient;
 using PagedList;
+using TK.Business.Model;
 
 namespace TK.Business.Dao
 {
@@ -173,7 +174,59 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByGroupNew::" + ex.InnerException.Message);
             }
         }
-        public TblNewsDraff FindByTitle(string title)
+        public IEnumerable<TblNewsDraffModelSearch> FindByTitle(string title, string category)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    if (category == null || category== "All")
+                    {
+                        return db.Database.SqlQuery<TblNewsDraffModelSearch>("select TblNewsDraff.NewsId, TblNewsDraff.Title, TblGroupNews.Name, TblNewsDraff.IsHome,  TblNewsDraff.IsEvent, TblNewsDraff.IsWeek from TblNewsDraff inner join TblGroupNews on TblNewsDraff.GroupNewsId=TblGroupNews.GroupNewsId where freetext((Title, SubTitle), @title)",
+                        new SqlParameter("@title", title)).ToList();
+                    }
+                    if (category == "14")
+                    {
+                        return db.Database.SqlQuery<TblNewsDraffModelSearch>("select * from TblNewsDraff nb where freetext((Title, SubTitle),'" + title + "') and GroupNewsId=14").ToList();
+                    }
+                    var que = db.Database.SqlQuery<TblNewsDraffModelSearch>("select * from TblNewsDraff nb where freetext((Title, SubTitle),'"+title+"') and "+category+"='true'").ToList();
+                    return que;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitle::" + ex.Message);
+                else
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitle::" + ex.InnerException.Message);
+            }
+        }
+        public IEnumerable<TblNewsDraffModelSearch>FindByCate(string cate)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    if (cate == "All"|| cate==null)
+                    {
+                        return db.Database.SqlQuery<TblNewsDraffModelSearch>("select * from TblNewsDraff").ToList();
+                    }
+                    else if (cate == "14")
+                    {
+                        return db.Database.SqlQuery<TblNewsDraffModelSearch>("select * from TblNewsDraff where TblNewsDraff.GroupNewsId=14").ToList();
+                    }
+                    return db.Database.SqlQuery<TblNewsDraffModelSearch>("select * from TblNewsDraff where "+cate+" ='true'").ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                    throw new Exception("TBLNEWDRAFFDao::FindByCate::" + ex.Message);
+                else
+                    throw new Exception("TBLNEWDRAFFDao::FindByCate::" + ex.InnerException.Message);
+            }
+        }
+        public TblNewsDraff FindByTitleFile(string title)
         {
             try
             {
@@ -185,10 +238,11 @@ namespace TK.Business.Dao
             catch (Exception ex)
             {
                 if (ex.InnerException == null)
-                    throw new Exception("TBLNEWDRAFFDao::FindByTitle::" + ex.Message);
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitleFile::" + ex.Message);
                 else
-                    throw new Exception("TBLNEWDRAFFDao::FindByTitle::" + ex.InnerException.Message);
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitleFile::" + ex.InnerException.Message);
             }
         }
+        
     }
 }

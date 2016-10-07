@@ -13,12 +13,12 @@ namespace TkSchoolNews.Controllers
     {
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult TblCommentAdminCreate(long newsid, string uck, TblNewsDraffModel model)
+        public ActionResult TblCommentAdminCreate(long newsid, string uck, TblComment model)
         {
             try {
                 TblComment o = new TblComment();
                 o.Name = GetUserName();
-                o.Content = model.Comment;
+                o.Content = model.Content;
                 o.NewsId = newsid;
                 o.CreateDate = DateTime.Now;
                 o.IsAd = true;

@@ -41,6 +41,7 @@ namespace TkSchoolNews.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.UserName = GetUserName();
             return View();
         }
         [Authorize]

@@ -3,52 +3,64 @@
     ViewBag.Title = "quản lý album ảnh";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<h4><a href="@Url.Action("Index","Admin")">trang chủ</a> <strong>>></strong> <span style="color:red;">danh sách ảnh</span></h4>
-<div ng-app="myApp" ng-controller="myCtrl">
-    <div class="row">
-        <div class="col-lg-6">
-            <table class="table">
-                <tr class="success">
-                    <th>tìm kiếm ảnh</th>
-                    <td><input type="text" name="searchname" ng-model="searchText.$" /></td>
-                </tr>
-            </table>
+<div class="container">
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">danh sách ảnh</span>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <div class="row">
+            <div class="col-lg-6">
+                <br />
+                <form role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText.$" id="txtsearch" />
+                        <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
+                    </div>
+                </form>
+            </div>
         </div>
+        <br />
+        <table cellpadding="12" class="table table-bordered table-hover">
+            <tr>
+                <th>mã ảnh</th>
+                <th>tên ảnh</th>
+                <th>đường dẫn</th>
+                <th>hành động</th>
+            </tr>
+            <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.Id}}">
+                <td>{{uni.Id}}</td>
+                <td>{{uni.Name}}</td>
+                <td>{{uni.ImageUrl}}</td>
+                <td>
+                    @{
+                        var url = Url.Action("TblGalleryUpdate", "Admin", new { @id = "{{uni.Id}}" });
+                        url = HttpUtility.UrlDecode(url);
+                    }
+                    <a data-ng-href="@url" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                    &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
+        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+        <label>&nbsp;số bản ghi&nbsp;</label>
+        <select ng-model="pageSize">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        {{currentPage+1}}/{{numberOfPages()}}
+        <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+        <br /><br />
+        <a href="@Url.Action("TblGalleryCreate","Admin")" class="btn btn-info">tạo mới</a>
     </div>
-    <table cellpadding="12" class="table table-bordered table-hover">
-        <tr>
-            <th>mã ảnh</th>
-            <th>tên ảnh</th>
-            <th>đường dẫn</th>
-            <th>hành động</th>
-        </tr>
-        <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.Id}}">
-            <td>{{uni.Id}}</td>
-            <td>{{uni.Name}}</td>
-            <td>{{uni.ImageUrl}}</td>
-            <td>
-                @{
-                    var url = Url.Action("TblGalleryUpdate", "Admin", new { @id = "{{uni.Id}}" });
-                    url = HttpUtility.UrlDecode(url);
-                }
-                <a data-ng-href="@url" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
-                &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button>
-            </td>
-        </tr>
-</table>
-    <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
-    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-    </button>
-    <label>&nbsp;số bản ghi&nbsp;</label><input type="text" ng-model="pageSize" size="1" />
-    {{currentPage+1}}/{{numberOfPages()}}
-    <button ng-disabled="currentPage >= unit.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-    </button>
-    <br /><br />
-    <a href="@Url.Action("TblGalleryCreate","Admin")" class="btn btn-info">tạo mới</a>
+    <br />
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">danh sách ảnh</span>
+    <br />&nbsp;
 </div>
-<br />
 <script>
     var app = angular.module("myApp", ['ngSanitize']);
     app.controller("myCtrl", function ($scope, $http, $window) {

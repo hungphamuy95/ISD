@@ -81,6 +81,9 @@ namespace TK.Business.Data
         [StringLength(150)]
         public string Metatitle { get; set; }
 
+        [StringLength(500)]
+        public string SubTitle { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TblComment> TblComments { get; set; }
 

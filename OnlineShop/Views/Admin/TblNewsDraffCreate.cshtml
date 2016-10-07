@@ -1,0 +1,99 @@
+﻿@model TK.Business.Model.TblNewsDraffCreateModel
+
+@{
+    ViewBag.Title = "tạo mới tin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container">
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">tạo tin mới</span>
+    <br />
+    <br />
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h4>tạo tin mới</h4></div>
+        <div class="panel-body">
+            <div ng-app="myApp" ng-controller="myCtrl">
+                @using (Html.BeginForm())
+            {
+                    @Html.AntiForgeryToken()
+                    <table class="table" style="border:none;">
+                        <tr>
+                            <th>tiêu đề</th>
+                            <td>
+                                <div class="col-xs-4">
+                                    @Html.TextBoxFor(model => model.title, new { @class = "form-control", @id = "txtsearch" })
+                                </div><br /><br />
+                                <div class="col-xs-4">
+                                    @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>nội dung sơ lược</th>
+                            <td>
+                                @Html.TextAreaFor(model => model.shortcontent, new { @id = "txtDescript1" })
+                                @Html.ValidationMessageFor(model => model.shortcontent, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>nội dung chính</th>
+                            <td>
+                                @Html.TextAreaFor(model => model.content, new { @id = "txtDescript2" })
+                                @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>hình ảnh</th>
+                            <td>
+                                <div class="col-xs-4">
+                                    <input type="text" name="image" id="txtImage" class="form-control" />
+                                </div>
+                                <button id="btnselect" class="btn btn-success">chọn ảnh</button>
+                            </td>
+                        </tr>
+                        @*<tr class="info">
+                                <th>sự kiện</th>
+                                <td>@Html.CheckBoxFor(model=>model.isevent)</td>
+                            </tr>*@
+                        
+                        <tr>
+                                <th>tệp đính kèm</th>
+                                <td>
+                                    <div class="col-lg-3">
+                                        <select name="fileattach" class="form-control">
+                                            <option value="" selected>---chọn---</option>
+                                            <option ng-repeat="p in listfile">{{p.Name}}</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        <tr>
+                            <th>phát hành</th>
+                            <td>@Html.CheckBoxFor(model => model.isweek)</td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="tạo mới" class="btn btn-info" /><br />
+                }
+                <br />
+            </div>
+        </div>
+    </div>
+    <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">tạo tin mới</span>
+    <br />&nbsp;
+</div>
+ <script>
+     var app = angular.module("myApp", ['ngSanitize']);
+     app.controller("myCtrl", function ($scope, $http, $window) {
+         $http({
+             method: "POST",
+             url: "/Admin/TblGroupNewsList"
+         }).then(function (restult) {
+             $scope.listgroup = restult.data;
+         });
+         $http({
+             method: "POST",
+             url: "/Admin/TblListFile"
+         }).then(function (re) {
+             $scope.listfile = re.data;
+         });
+     });
+ </script>

@@ -19,6 +19,22 @@ namespace TkSchoolNews.Controllers
     {
         //ghi log hệ thống
         public log4net.ILog logger = log4net.LogManager.GetLogger("TkSchoolNews");
+        protected void SetAlert(string message, string type)
+        {
+            TempData["AlertMessage"] = message;
+            if (type == "success")
+            {
+                TempData["AlertType"] = "alert-success";
+            }
+            else if (type == "warning")
+            {
+                TempData["AlertType"] = "alert-warning";
+            }
+            else if (type == "error")
+            {
+                TempData["AlertType"] = "alert-danger";
+            }
+        }
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
@@ -171,6 +187,7 @@ namespace TkSchoolNews.Controllers
                     }
 
                 }
+                SetAlert("bạn phải xác nhận không phải là người máy", "error");
                 return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
             }
             catch (Exception ex)

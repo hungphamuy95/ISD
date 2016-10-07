@@ -13,12 +13,8 @@ namespace TkSchoolNews.Controllers
         {
             return View();
         }
-        public ActionResult ErrorCommon(int? id)
+        public ActionResult ErrorCommon()
         {
-            if (id != null)
-            Response.StatusCode = (int)id;
-            else
-            Response.Write("đã xảy ra lỗi");
             return View();
         }
         public ActionResult AccessDeny()

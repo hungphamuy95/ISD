@@ -188,5 +188,47 @@ namespace TK.Business.Dao
                 }
             }
         }
+        public TblUser FindByUserName(string username)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    return db.TblUsers.Where(x => x.Username == username).SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                {
+                    throw new Exception("TblUserDao::FindByUserName::" + ex.Message);
+                }
+                else
+                {
+                    throw new Exception("TblUserDao::FindByUserName::" + ex.InnerException.Message);
+                }
+            }
+        }
+        public TblUser FindByPassWord(string password)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    return db.TblUsers.Where(x => x.Password == password).SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                {
+                    throw new Exception("TblUserDao::FindByPassWord::" + ex.Message);
+                }
+                else
+                {
+                    throw new Exception("TblUserDao::FindByPassWord::" + ex.InnerException.Message);
+                }
+            }
+        }
     }
 }
