@@ -19,8 +19,22 @@ namespace TkSchoolNews.Controllers
     {
         //ghi log hệ thống
         public log4net.ILog logger = log4net.LogManager.GetLogger("TkSchoolNews");
-
-     
+        protected void SetAlert(string message, string type)
+        {
+            TempData["AlertMessage"] = message;
+            if (type == "success")
+            {
+                TempData["AlertType"] = "alert-success";
+            }
+            else if (type == "warning")
+            {
+                TempData["AlertType"] = "alert-warning";
+            }
+            else if (type == "error")
+            {
+                TempData["AlertType"] = "alert-danger";
+            }
+        }
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
@@ -37,10 +51,7 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-       
 
-
-       
         [AllowAnonymous]
         public ActionResult NewsList(int page = 1, int pagesize = 10)
         {
@@ -56,10 +67,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-       
-
-
-        
         [AllowAnonymous]
         [HttpGet]
         [ValidateInput(false)]
@@ -79,10 +86,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-        
-
-
-       
         [AllowAnonymous]
         public ActionResult EventNews(long groupnewsid)
         {
@@ -98,11 +101,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-
-        
-
-
-        
         [AllowAnonymous]
         public ActionResult Contact(long groupnewsid)
         {
@@ -118,10 +116,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-        
-
-
-       
         public void DownloadFile(string filepath, string filename)
         {
             try
@@ -139,10 +133,6 @@ namespace TkSchoolNews.Controllers
                 logger.Info("Home" + "::DonwloadFile::" + ex.Message);
             }
         }
-       
-
-
-        
         [AllowAnonymous]
         public ActionResult Material(long groupnewsid)
         {
@@ -159,10 +149,6 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-       
-
-
-        
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
@@ -273,8 +259,5 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
-        
-
-
     }
 }
