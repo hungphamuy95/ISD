@@ -33,9 +33,7 @@
                         }
                         else
                         {
-                            
-                                <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
-                            
+                            <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
                         }
                     }
                     <hr />
@@ -93,15 +91,7 @@
                                     <th>phát hành</th>
                                     <td>@Html.CheckBoxFor(model => model.isweek)</td>
                                 </tr>
-                            }
-                            else
-                            {
                                 <tr>
-                                    <th>phát hành</th>
-                                    <td>@Html.CheckBoxFor(model => model.isweek, new { @disabled = "disabled" })</td>
-                                </tr>
-                            }
-                            <tr>
                                     <th>tệp đính kèm</th>
                                     <td>
                                         <div class="col-lg-3">
@@ -114,6 +104,26 @@
                                         </div>
                                     </td>
                                 </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th>phát hành</th>
+                                    <td>@Html.CheckBoxFor(model => model.isweek, new { @disabled = "disabled" })</td>
+                                </tr>
+                                <tr>
+                                    <th>tệp đính kèm</th>
+                                    <td>
+                                        <div class="col-lg-3">
+                                            <select name="fileattach" class="form-control" ng-model="defaultvalue" disabled>
+                                               <option value="" selected>---chọn---</option>
+                                               <option ng-repeat="p in listfile">{{p.Name}}</option>
+                                               <option value="deletefile">---xóa file---</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </table>
                         <input type="submit" value="cập nhật" class="btn btn-info" />
                         <br />

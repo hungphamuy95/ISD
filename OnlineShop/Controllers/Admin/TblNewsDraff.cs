@@ -187,8 +187,8 @@ namespace TkSchoolNews.Controllers
         [ValidateInput(false)]
         public ActionResult TblNewsDraffUpdate(long id, TblNewsDraffModel model, string fileattach)
         {
-            try
-            {
+            //try
+            //{
                 if (ModelState.IsValid)
                 {
                     TblNewsDraff o = new TblNewsDraff();
@@ -209,6 +209,8 @@ namespace TkSchoolNews.Controllers
                     new TblNewsDraffDao().Update(o);
                     if (fileattach != "" && fileattach!= "deletefile")
                     {
+                    if (fileattach != null)
+                    {
                         var checknewsid = new TblFileNewsDraffDao().FindByNewsId(id);
                         if (checknewsid == null)
                         {
@@ -218,31 +220,35 @@ namespace TkSchoolNews.Controllers
                             new TblFileNewsDraffDao().Create(obj);
                         }
                         else if (checknewsid != null)
-                    {
-                        var resupdate = new TblNewsDraffDao().FindByTitleFile(model.title);
-                        var findfile = new TblFileNewsDraffDao().FindByNewsId(id);
-                        obj.Id = findfile.Id;
-                        obj.NewsId = resupdate.NewsId;
-                        obj.FileId = new TblFileDao().FindByName(fileattach).Id;
-                        new TblFileNewsDraffDao().Update(obj);
+                        {
+                            var resupdate = new TblNewsDraffDao().FindByTitleFile(model.title);
+                            var findfile = new TblFileNewsDraffDao().FindByNewsId(id);
+                            obj.Id = findfile.Id;
+                            obj.NewsId = resupdate.NewsId;
+                            obj.FileId = new TblFileDao().FindByName(fileattach).Id;
+                            new TblFileNewsDraffDao().Update(obj);
+                        }
                     }
                     }
                     else if(fileattach== "deletefile")
                     {
                         TblFileNewsDraff deletefile = new TblFileNewsDraffDao().FindByNewsId(id);
-                        new TblFileNewsDraffDao().Delete(deletefile);
+                        if (deletefile != null)
+                        {
+                            new TblFileNewsDraffDao().Delete(deletefile);
+                        }
                     }
                     SetAlert("cập nhật thành công", "success");
                     return RedirectToAction("TblNewsDraffUpdate");
                 }
                 var list = new TblNewsDraffDao().FindById(id);
                 return View(list);
-            }
-            catch (Exception ex)
-            {
-                logger.Info(ControllerName + "::TblNewsDraffUpdate::" + ex.Message);
-                return RedirectToAction("Index", "Error");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Info(ControllerName + "::TblNewsDraffUpdate::" + ex.Message);
+            //    return RedirectToAction("Index", "Error");
+            //}
         }
     }
 }
