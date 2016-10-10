@@ -93,6 +93,10 @@ namespace TkSchoolNews.Controllers
             {
                 ViewBag.School = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
                 ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
+                if (ViewBag.GroupNewsName == null && groupnewsid!=1 && groupnewsid != 14 && groupnewsid !=9 && groupnewsid !=2)
+                {
+                    return RedirectToAction("ErrorCommon", "Error");
+                }
                 return View();
             }
             catch (Exception ex)

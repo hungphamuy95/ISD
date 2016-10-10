@@ -75,8 +75,8 @@ BuilderPreviewHTMLCSS
 .modal-content {
     margin: auto;
     display: block;
-    width: 100%;
-    max-width: 1000px;
+    width: 80%;
+    max-width: 700px;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
