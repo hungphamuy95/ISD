@@ -49,18 +49,23 @@ namespace TkSchoolNews.Controllers
                 if (file != null && file.ContentLength > 0)
                 {
                     var filename = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/App_Data/Uploads"), filename);
-                    file.SaveAs(path);
-                    TblFile o = new TblFile();
-                    o.Name = filename;
-                    o.Directory = "~/App_Data/Uploads/";
-                    o.CreateUser = GetUserName();
-                    o.CreateDate = DateTime.Now;
-                    new TblFileDao().Create(o);
-                    SetAlert("tải thành công", "success");
+                    var checkfilename = new TblFileDao().FindByName(filename);
+                    if (checkfilename == null)
+                    {
+                        var path = Path.Combine(Server.MapPath("~/App_Data/Uploads"), filename);
+                        file.SaveAs(path);
+                        TblFile o = new TblFile();
+                        o.Name = filename;
+                        o.Directory = "~/App_Data/Uploads/";
+                        o.CreateUser = GetUserName();
+                        o.CreateDate = DateTime.Now;
+                        new TblFileDao().Create(o);
+                        SetAlert("tải thành công", "success");
+                        return RedirectToAction("TblFileIndex");
+                    }
+                    TempData["msg"]= "alert('tệp tải lên đã tồn tại, vui lòng thử lại');";
                     return RedirectToAction("TblFileIndex");
                 }
-                SetAlert("tải thành công", "success");
                 return RedirectToAction("TblFileIndex");
             }
             catch (Exception ex)

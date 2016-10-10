@@ -58,10 +58,11 @@
     @using (Html.BeginForm("TblFileCreate", "Admin", FormMethod.Post, new {@class= "upload-form", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <table class="table">
             <tr>
                 <th>chọn tệp</th>
-                <td><input type="file" name="file" required data-max-size="4096" class="upload-file"/></td>
+                <td><input type="file" name="file" required data-max-size="4096000" class="upload-file"/></td>
             </tr>
         </table>
         <input type="submit" value="tải lên" class="btn btn-default" />
@@ -139,15 +140,11 @@
                 if (fileSize > maxSize) {
                     alert('tệp tải lên phải nhỏ hơn 4 mb');
                     return false;
-                } else {
-                    alert('file size is correct- ' + fileSize + ' bytes');
-                }
-            } else {
-                alert('choose file, please');
-                return false;
-            }
+                } 
+            } 
 
         });
     });
+    @Html.Raw(TempData["msg"])
 </script>
 
