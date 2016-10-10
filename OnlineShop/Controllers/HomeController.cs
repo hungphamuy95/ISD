@@ -93,7 +93,7 @@ namespace TkSchoolNews.Controllers
             {
                 ViewBag.School = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
                 ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
-                if (ViewBag.GroupNewsName == null && groupnewsid!=1 && groupnewsid != 14 && groupnewsid !=9 && groupnewsid !=2)
+                if (ViewBag.GroupNewsName == null || groupnewsid == 1 || groupnewsid == 14 || groupnewsid == 2 || groupnewsid ==9 )
                 {
                     return RedirectToAction("ErrorCommon", "Error");
                 }
@@ -145,6 +145,10 @@ namespace TkSchoolNews.Controllers
                 ViewBag.Material = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
                 ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
                 ViewBag.Gallery = new TblGalleryDao().FindByAll();
+                if(groupnewsid != 8)
+                {
+                    return RedirectToAction("ErrorCommon", "Error");
+                }
                 return View();
             }
             catch (Exception ex)
