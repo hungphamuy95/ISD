@@ -1,8 +1,28 @@
-﻿
-@{
-    ViewBag.Title = "Oppps";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div style="text-align:center"><span class="glyphicon glyphicon-remove" style="color:red; font-size:100px;"></span></div>
-<div style="text-align:center;"><h1 style="color:red;">trang bạn tìm không tồn tại</h1></div>
-
+﻿<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Lỗi!</title>
+    <link rel="icon" href="~/Images/logo.ico" />
+    <meta name="keywords" content="404 iphone web template, Andriod web template, Smartphone web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <link href="~/Content/Custom.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body style="font-family">
+    <!--start-wrap--->
+    <div class="wrap">
+        <!--start-content------>
+        <div class="content">
+            <img src="~/Images/error-img.png" title="error" />
+            <p><span style="color:red;">Rất tiếc, trang bạn tìm không tồn tại</span></p>
+            <a href="@Url.Action("Index","Home")">Trở về trang chủ</a>
+        </div>
+        <!--End-Cotent------>
+    </div>
+    <!--End-wrap--->
+</body>
+</html>

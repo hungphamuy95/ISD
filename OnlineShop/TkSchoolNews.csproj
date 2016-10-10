@@ -1352,8 +1352,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Images\404-error.jpg" />
+    <Content Include="Images\bg.png" />
+    <Content Include="Images\bg1.png" />
     <Content Include="Images\defaultimage.jpg" />
+    <Content Include="Images\error-img.png" />
     <Content Include="Images\error-mesage.png" />
     <Content Include="Images\hourglass.gif" />
     <Content Include="Images\logo.ico" />
