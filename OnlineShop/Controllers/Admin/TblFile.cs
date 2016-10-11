@@ -28,6 +28,7 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        [Authorize]
         public JsonResult TblFileList()
         {
             try
@@ -41,7 +42,7 @@ namespace TkSchoolNews.Controllers
                 return Json(JsonRequestBehavior.AllowGet);
             }
         }
-        
+        [Authorize]
         public ActionResult TblFileCreate(HttpPostedFileBase file)
         {
             try
@@ -63,7 +64,7 @@ namespace TkSchoolNews.Controllers
                         SetAlert("tải thành công", "success");
                         return RedirectToAction("TblFileIndex");
                     }
-                    TempData["msg"]= "alert('tệp tải lên đã tồn tại, vui lòng thử lại');";
+                    SetAlert("tệp tải lên đã tồn tại, vui lòng chọn tệp khác", "error");
                     return RedirectToAction("TblFileIndex");
                 }
                 return RedirectToAction("TblFileIndex");
@@ -74,6 +75,7 @@ namespace TkSchoolNews.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+        [Authorize]
         public void DownloadFile(string filepath, string filename)
         {
             try
@@ -91,6 +93,7 @@ namespace TkSchoolNews.Controllers
                 logger.Info(ControllerName + "::DonwloadFile::" + ex.Message);
             }
         }
+        [Authorize]
         public JsonResult TblFileDelete(long id)
         {
             TblFile o = new TblFile();

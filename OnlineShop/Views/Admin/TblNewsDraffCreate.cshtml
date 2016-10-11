@@ -20,7 +20,7 @@
                             <th>tiêu đề</th>
                             <td>
                                 <div class="col-xs-4">
-                                    @Html.TextBoxFor(model => model.title, new { @class = "form-control", @id = "txtsearch" })
+                                    @Html.TextBoxFor(model => model.title, new { @class = "form-control form-fixer", @id = "txtsearch" })
                                 </div><br /><br />
                                 <div class="col-xs-4">
                                     @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
@@ -30,22 +30,31 @@
                         <tr>
                             <th>nội dung sơ lược</th>
                             <td>
-                                @Html.TextAreaFor(model => model.shortcontent, new { @id = "txtDescript1" })
-                                @Html.ValidationMessageFor(model => model.shortcontent, "", new { @class = "text-danger" })
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @Html.TextAreaFor(model => model.shortcontent, new { @id = "txtDescript1"})
+                                        @Html.ValidationMessageFor(model => model.shortcontent, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <th>nội dung chính</th>
                             <td>
-                                @Html.TextAreaFor(model => model.content, new { @id = "txtDescript2" })
-                                @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @Html.TextAreaFor(model => model.content, new { @id = "txtDescript2" })
+                                        @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                
                             </td>
                         </tr>
                         <tr>
                             <th>hình ảnh</th>
                             <td>
                                 <div class="col-xs-4">
-                                    <input type="text" name="image" id="txtImage" class="form-control" />
+                                    <input type="text" name="image" id="txtImage" class="form-control form-fixer" />
                                 </div>
                                 <button id="btnselect" class="btn btn-success">chọn ảnh</button>
                             </td>
@@ -68,7 +77,7 @@
                             </tr>
                         <tr>
                             <th>phát hành</th>
-                            <td>@Html.CheckBoxFor(model => model.isweek)</td>
+                            <td><label style="padding-left:25px;" class="checkbox">@Html.CheckBoxFor(model => model.isweek)</label></td>
                         </tr>
                     </table>
                     <input type="submit" value="tạo mới" class="btn btn-info" /><br />

@@ -168,13 +168,23 @@ namespace TkSchoolNews.Controllers
         }
         [Authorize]
         [HttpGet]
-        public ActionResult TblNewsDraffUpdate(long id)
+        public ActionResult TblNewsDraffUpdate(string id)
         {
             try
             {
-                var list = new TblNewsDraffDao().FindById(id);
-                ViewBag.FileAttach = new TblFileDao().FindByNewsId(id);
-                return View(list);
+                long numberid;
+                bool check = Int64.TryParse(id, out numberid);
+                if (check == true)
+                {
+                    var list = new TblNewsDraffDao().FindById(numberid);
+                    ViewBag.FileAttach = new TblFileDao().FindByNewsId(numberid);
+                    if (list == null)
+                    {
+                        return RedirectToAction("AccessDeny", "Error");
+                    }
+                    return View(list);
+                }
+                return RedirectToAction("AccessDeny", "Error");
             }
             catch (Exception ex)
             {
@@ -187,8 +197,8 @@ namespace TkSchoolNews.Controllers
         [ValidateInput(false)]
         public ActionResult TblNewsDraffUpdate(long id, TblNewsDraffModel model, string fileattach)
         {
-            //try
-            //{
+            try
+            {
                 if (ModelState.IsValid)
                 {
                     TblNewsDraff o = new TblNewsDraff();
@@ -243,12 +253,12 @@ namespace TkSchoolNews.Controllers
                 }
                 var list = new TblNewsDraffDao().FindById(id);
                 return View(list);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.Info(ControllerName + "::TblNewsDraffUpdate::" + ex.Message);
-            //    return RedirectToAction("Index", "Error");
-            //}
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ControllerName + "::TblNewsDraffUpdate::" + ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
         }
     }
 }

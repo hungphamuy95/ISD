@@ -87,17 +87,23 @@ namespace TkSchoolNews.Controllers
             }
         }
         [AllowAnonymous]
-        public ActionResult EventNews(long groupnewsid)
+        public ActionResult EventNews(string groupnewsid)
         {
             try
             {
-                ViewBag.School = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
-                ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
-                if (ViewBag.GroupNewsName == null || groupnewsid == 1 || groupnewsid == 14 || groupnewsid == 2 || groupnewsid ==9 )
+                long numberid;
+                bool check = Int64.TryParse(groupnewsid, out numberid);
+                if(check== true)
                 {
-                    return RedirectToAction("ErrorCommon", "Error");
+                    ViewBag.School = new TblNewsDraffDao().FindByGroupNew(numberid);
+                    ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(numberid);
+                    if (ViewBag.GroupNewsName == null || numberid == 1 || numberid == 14 || numberid == 2 || numberid == 9)
+                    {
+                        return RedirectToAction("ErrorCommon", "Error");
+                    }
+                    return View();
                 }
-                return View();
+                return RedirectToAction("ErrorCommon", "Error");
             }
             catch (Exception ex)
             {
@@ -106,13 +112,23 @@ namespace TkSchoolNews.Controllers
             }
         }
         [AllowAnonymous]
-        public ActionResult Contact(long groupnewsid)
+        public ActionResult Contact(string groupnewsid)
         {
             try
             {
-                ViewBag.School = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
-                ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
-                return View();
+                long numberid;
+                bool check = Int64.TryParse(groupnewsid, out numberid);
+                if (check == true)
+                {
+                    ViewBag.School = new TblNewsDraffDao().FindByGroupNew(numberid);
+                    ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(numberid);
+                    if (numberid != 15)
+                    {
+                        return RedirectToAction("ErrorCommon", "Error");
+                    }
+                    return View();
+                }
+                return RedirectToAction("ErrorCommon", "Error");
             }
             catch (Exception ex)
             {
@@ -138,18 +154,24 @@ namespace TkSchoolNews.Controllers
             }
         }
         [AllowAnonymous]
-        public ActionResult Material(long groupnewsid)
+        public ActionResult Material(string groupnewsid)
         {
             try
             {
-                ViewBag.Material = new TblNewsDraffDao().FindByGroupNew(groupnewsid);
-                ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(groupnewsid);
-                ViewBag.Gallery = new TblGalleryDao().FindByAll();
-                if(groupnewsid != 8)
+                long numberid;
+                bool check = Int64.TryParse(groupnewsid, out numberid);
+                if (check == true)
                 {
-                    return RedirectToAction("ErrorCommon", "Error");
+                    ViewBag.Material = new TblNewsDraffDao().FindByGroupNew(numberid);
+                    ViewBag.GroupNewsName = new TblGroupNewsDao().FindById(numberid);
+                    ViewBag.Gallery = new TblGalleryDao().FindByAll();
+                    if (numberid != 8)
+                    {
+                        return RedirectToAction("ErrorCommon", "Error");
+                    }
+                    return View();
                 }
-                return View();
+                return RedirectToAction("ErrorCommon", "Error");
             }
             catch (Exception ex)
             {

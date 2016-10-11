@@ -19,26 +19,26 @@
 
         <div id="menu1" class="tab-pane fade">
             <div class="row">
-
-                <div class="col-lg-8" style="border:1px darkgrey solid; border-radius:10px;">
-                    <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
-                    <h3>@Model.title</h3>
-                    <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.shortcontent))</span><br />
-                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
-                    @{
-
-                        if (file == null)
-                        {
-                            <div></div>
-                        }
-                        else
-                        {
-                            <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
-                        }
-                    }
-                    <hr />
+                <div class="col-lg-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
+                            <h3>@Model.title</h3>
+                            <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.shortcontent))</span><br />
+                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
+                            @{
+                            if (file == null)
+                                {
+                                    <div></div>
+                                }
+                                else
+                                {
+                                    <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
+                                }
+                            }
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
         <!--update nội dung tin tức-->
@@ -89,7 +89,7 @@
                             {
                                 <tr>
                                     <th>phát hành</th>
-                                    <td>@Html.CheckBoxFor(model => model.isweek)</td>
+                                    <td><label style="padding-left:20px;">@Html.CheckBoxFor(model => model.isweek)</label></td>
                                 </tr>
                                 <tr>
                                     <th>tệp đính kèm</th>
@@ -109,7 +109,7 @@
                             {
                                 <tr>
                                     <th>phát hành</th>
-                                    <td>@Html.CheckBoxFor(model => model.isweek, new { @disabled = "disabled" })</td>
+                                    <td><label style="padding-left:20px;">@Html.CheckBoxFor(model => model.isweek, new { @disabled = "disabled" })</label></td>
                                 </tr>
                                 <tr>
                                     <th>tệp đính kèm</th>

@@ -1,8 +1,22 @@
-﻿
-@{
-    ViewBag.Title = "AccessDeny";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h3><span style="color:red;">truy cập bị từ chối</span></h3>
-
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Lỗi!</title>
+    <link rel="icon" href="~/Images/logo.ico" />
+    <meta name="keywords" content="404 iphone web template, Andriod web template, Smartphone web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <link href="~/Content/Custom.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body style="font-family">
+    <!--start-wrap--->
+    <div class="wrap">
+        <!--start-content------>
+        <div class="content">
+            <img src="~/Images/error-img.png" title="error" />
+            <p><span style="color:red;">Rất tiếc, trang bạn tìm không tồn tại</span></p>
+            <a href="@Url.Action("TblNewsDraffListIndex","Admin")">Trở về danh sách</a>
+        </div>
+        <!--End-Cotent------>
+    </div>
+    <!--End-wrap--->
+</body>
+</html>
