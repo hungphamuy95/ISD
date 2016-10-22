@@ -127,7 +127,7 @@ namespace TkSchoolNews.Controllers
                 o.IsWeek = model.isweek;
                 o.CreateUser = this.GetUserName();
                 o.CreateDate = DateTime.Now;
-                o.Metatitle = (new Rewrite().RemoveUnicode(model.title)).Replace(" ", "-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
+                o.Metatitle = (new Rewrite().RemoveUnicode(model.title)).Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace(".", "").Replace(" ", "-").ToLower();
                 var test = new Rewrite().RemoveUnicode(model.title).ToLower();
                 o.SubTitle = test;
                 new TblNewsDraffDao().Create(o);
@@ -213,7 +213,7 @@ namespace TkSchoolNews.Controllers
                     o.IsWeek = model.isweek;
                     o.EditUser = GetUserName();
                     o.EditDate = DateTime.Now;
-                    string urlseo = (new Rewrite().RemoveUnicode(model.title)).Replace(" ", "-").Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace("[^0-9a-zA-Z]+", "").ToLower();
+                    string urlseo = (new Rewrite().RemoveUnicode(model.title)).Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace(".", "").Replace(" ","-").ToLower();
                     o.Metatitle = urlseo;
                     o.SubTitle = new Rewrite().RemoveUnicode(model.title).ToLower();
                     new TblNewsDraffDao().Update(o);

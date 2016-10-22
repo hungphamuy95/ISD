@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+Product Name		: TTNB 	
+Product Version 	: TTNB v1.0                                           	                     
+Product Owner   	: U1 Dev
+Developed By    	: Crystal, Inc
+
+Description: 
+Dự án xây dựng website quảng bá
+						
+File Name	   		: TblGroupNewsDao		   	     
+File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
+
+Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +26,7 @@ namespace TK.Business.Dao
     public partial class TblGroupNewsDao
     {
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tìm kiếm đối tượng theo tên
         /// </summary>
         /// <returns></returns>

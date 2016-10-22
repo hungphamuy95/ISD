@@ -25,13 +25,13 @@ using TK.Business.Model;
 namespace TK.Business.Dao
 {
     /// <summary>
-	/// Author: Phạm Huy Hùng
+	/// Author: Lê Tuấn Anh
 	/// Todo: 
 	/// </summary>
     public partial class TblFileDao
     {
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: 
         /// </summary>
         public TblFileDao()
@@ -39,10 +39,10 @@ namespace TK.Business.Dao
 
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
-        /// Todo: tìm kiếm đối tượng theo khóa chính
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm kiếm đối tượng theo id
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         public TblFile FindById(long id)
         {
@@ -66,7 +66,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
         /// <param name=""></param>
@@ -93,7 +93,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
         /// <param name=""></param>
@@ -121,10 +121,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo đối tượng mới
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public void Create(TblFile o)
         {
@@ -149,7 +149,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: xóa đối tượng
         /// </summary>
         /// <param name="o"></param>
@@ -177,6 +177,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm đối tượng theo name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public TblFile FindByName(string name)
         {
             try
@@ -198,6 +204,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm đối tượng theo newsid
+        /// </summary>
+        /// <param name="newsid"></param>
+        /// <returns></returns>
         public TblFile FindByNewsId(long newsid)
         {
             try

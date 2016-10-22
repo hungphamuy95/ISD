@@ -26,7 +26,7 @@ using TK.Business.Model;
 namespace TK.Business.Dao
 {
     /// <summary>
-	/// Author: Phạm Huy Hùng
+	/// Author: Lê Tuấn Anh
 	/// Todo: 
 	/// </summary>
     public partial class TblUserDao
@@ -34,7 +34,7 @@ namespace TK.Business.Dao
        
         
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: 
         /// </summary>
         public TblUserDao()
@@ -42,10 +42,10 @@ namespace TK.Business.Dao
             
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tìm kiếm đối tượng theo khóa chính
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="Username"></param>
         /// <returns></returns>
         public LoginModel FindById(string Username)
         {
@@ -70,7 +70,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
         /// <param name=""></param>
@@ -97,10 +97,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo đối tượng mới
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public void Create(TblUser o)
         {
@@ -125,7 +125,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: xóa đối tượng
         /// </summary>
         /// <param name="o"></param>
@@ -154,11 +154,11 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: cập nhật đối tượng
         /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>\
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public void Update(TblUser obj)
         {
             try
@@ -188,6 +188,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm theo username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public TblUser FindByUserName(string username)
         {
             try

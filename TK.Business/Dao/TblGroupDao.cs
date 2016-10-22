@@ -24,13 +24,13 @@ using PagedList;
 namespace TK.Business.Dao
 {
     /// <summary>
-	/// Author: Phạm Huy Hùng
+	/// Author: Lê Tuấn Anh
 	/// Todo: 
 	/// </summary>
     public partial class TblGroupDao
     {
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: 
         /// </summary>
         public TblGroupDao()
@@ -38,8 +38,8 @@ namespace TK.Business.Dao
 
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
-        /// Todo: tìm kiếm đối tượng theo khóa chính
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm kiếm đối tượng theo id
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -65,7 +65,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
         /// <param name=""></param>
@@ -92,10 +92,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo đối tượng mới
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public void Create(TblGroup o)
         {
@@ -120,7 +120,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: xóa đối tượng
         /// </summary>
         /// <param name="o"></param>
@@ -149,10 +149,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: cập nhật đối tượng
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>\
         public void Update(TblGroup o)
         {

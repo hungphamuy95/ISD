@@ -70,15 +70,25 @@ namespace TkSchoolNews.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ValidateInput(false)]
-        public ActionResult NewsDetail(string metatitle, long id)
+        public ActionResult NewsDetail(string metatitle, string id)
         {
             try
             {
-                var res = new TblNewsDraffDao().FindByDetail(id);
-                ViewBag.NewsDetail = res;
-                ViewBag.FileAttach = new TblFileDao().FindByNewsId(id);
-                ViewBag.cmt = new TblCommentDao().FindByNewsId(id);
-                return View();
+                long numberid;
+                bool check = Int64.TryParse(id, out numberid);
+                if (check == true)
+                {
+                    var res = new TblNewsDraffDao().FindByDetail(numberid);
+                    ViewBag.NewsDetail = res;
+                    ViewBag.FileAttach = new TblFileDao().FindByNewsId(numberid);
+                    ViewBag.cmt = new TblCommentDao().FindByNewsId(numberid);
+                    if (res == null)
+                    {
+                        return RedirectToAction("ErrorCommon", "Error");
+                    }
+                    return View();
+                }
+                return RedirectToAction("ErrorCommon", "Error");
             }
             catch (Exception ex)
             {

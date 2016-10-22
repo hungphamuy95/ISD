@@ -23,13 +23,13 @@ using TK.Business.Data;
 namespace TK.Business.Dao
 {
     /// <summary>
-	/// Author: Phạm Huy Hùng
+	/// Author: Lê Tuấn Anh
 	/// Todo: 
 	/// </summary>
     public partial class TblFileNewsDraffDao
     {
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: 
         /// </summary>
         public TblFileNewsDraffDao()
@@ -37,10 +37,10 @@ namespace TK.Business.Dao
 
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
-        /// Todo: tìm kiếm đối tượng theo khóa chính
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm kiếm đối tượng theo id
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         public TblFileNewsDraff FindById(long id)
         {
@@ -64,7 +64,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
         /// <param name=""></param>
@@ -91,10 +91,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo đối tượng mới
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public void Create(TblFileNewsDraff o)
         {
@@ -119,7 +119,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: xóa đối tượng
         /// </summary>
         /// <param name="o"></param>
@@ -148,10 +148,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: cập nhật đối tượng
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="obj"></param>
         /// <returns></returns>
         public void Update(TblFileNewsDraff obj)
         {

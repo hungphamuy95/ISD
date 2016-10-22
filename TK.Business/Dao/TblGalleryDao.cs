@@ -22,12 +22,28 @@ using TK.Business.Data;
 
 namespace TK.Business.Dao
 {
+    /// <summary>
+    /// Author: Lê Tuấn Anh
+    /// Todo: tìm theo newsid
+    /// </summary>
+    /// <returns></returns>
     public partial class TblGalleryDao
     {
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm theo newsid
+        /// </summary>
+        /// <returns></returns>
         public TblGalleryDao()
         {
 
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm theo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public TblGallery FindById(long id)
         {
             try
@@ -49,6 +65,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tạo list gồm các đối tượng
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IEnumerable<TblGallery> FindByAll()
         {
             try
@@ -70,6 +92,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tạo đối tượng mới
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Create(TblGallery o)
         {
             try
@@ -92,6 +120,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: xóa đối tượng
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Delete(TblGallery o)
         {
             try
@@ -115,6 +149,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: cập nhật các thuộc tính của đối tượng
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Update(TblGallery o)
         {
             try

@@ -15,7 +15,6 @@
             <h6><span style="color:darkslategrey">@Convert.ToDateTime(data.CreateDate).ToString("dd/MM/yyyy")</span>&nbsp;|&nbsp;<span style="color:darkslategrey;">người đăng: @data.CreateUser</span></h6>
 
             <h3>@data.Title</h3>
-            <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(data.ShortContent))</span><br />
             @Html.Raw(System.Web.HttpUtility.HtmlDecode(data.Content))
             @{ 
                 if (file == null)
@@ -24,8 +23,8 @@
                 }
                 else
                 {
-                    
-                        <p></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
+
+                    <p><strong>Tệp đính kèm:</strong></p><a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
                     
                 }
             }

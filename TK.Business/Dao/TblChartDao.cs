@@ -24,24 +24,26 @@ using PagedList;
 namespace TK.Business.Dao
 {
     /// <summary>
-	/// Author: Phạm Huy Hùng
-	/// Todo: 
-	/// </summary>
+    /// Author: Lê Tuấn Anh
+    /// Todo: cung cấp các phương thức kết nối dữ liệu đến bảng TblChart
+    /// </summary>
+    /// <returns></returns>
     public partial class TblChartDao
     {
         /// <summary>
-        /// Author: Phạm Huy Hùng
-        /// Todo: 
+        /// Author: Lê Tuấn Anh
+        /// Todo:
         /// </summary>
+        /// <returns></returns>
         public TblChartDao()
         {
 
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tìm kiếm đối tượng theo khóa chính
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public TblChart FindById(TblChart o)
         {
@@ -65,10 +67,9 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo list gồm các đối tượng
         /// </summary>
-        /// <param name=""></param>
         /// <returns></returns>
         public TblChart FindByAll()
         {
@@ -92,10 +93,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: tạo đối tượng mới
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>
         public void Create(TblChart o)
         {
@@ -120,7 +121,7 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: xóa đối tượng
         /// </summary>
         /// <param name="o"></param>
@@ -149,10 +150,10 @@ namespace TK.Business.Dao
             }
         }
         /// <summary>
-        /// Author: Phạm Huy Hùng
+        /// Author: Lê Tuấn Anh
         /// Todo: cập nhật đối tượng
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="o"></param>
         /// <returns></returns>\
         public void Update(TblChart o)
         {

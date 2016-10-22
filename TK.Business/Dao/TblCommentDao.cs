@@ -23,12 +23,28 @@ using PagedList;
 
 namespace TK.Business.Dao
 {
+    /// <summary>
+    /// Author: Lê Tuấn Anh
+    /// Todo: cung cấp các phương thức kết nối đến bảng TblComment
+    /// </summary>
+    /// <returns></returns>
     public partial class TblCommentDao
     {
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: 
+        /// /// </summary>
+        /// <returns></returns>
         public TblCommentDao()
         {
 
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tìm kiếm đối tượng theo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public TblComment FindById(long id)
         {
             try
@@ -50,6 +66,11 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tạo list danh sách các đối tượng
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<TblComment> FindByAll()
         {
             try
@@ -71,6 +92,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tạo đối tượng mới
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Create(TblComment o)
         {
             try
@@ -93,6 +120,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: xóa đối tượng
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Delete(TblComment o)
         {
             try
@@ -116,6 +149,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: cập nhật đối tượng
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public void Update(TblComment o)
         {
             try
@@ -140,6 +179,12 @@ namespace TK.Business.Dao
                 }
             }
         }
+        /// <summary>
+        /// Author: Lê Tuấn Anh
+        /// Todo: tạo list các đối tượng theo newsid
+        /// </summary>
+        /// <param name="newsid"></param>
+        /// <returns></returns>
         public IEnumerable<TblComment> FindByNewsId(long newsid)
         {
             try
