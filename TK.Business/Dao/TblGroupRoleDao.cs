@@ -1,18 +1,4 @@
-﻿/*
-Product Name		: TTNB 	
-Product Version 	: TTNB v1.0                                           	                     
-Product Owner   	: U1 Dev
-Developed By    	: Crystal, Inc
-
-Description: 
-Dự án xây dựng website quảng bá
-						
-File Name	   		: TblGroupRoleDao		   	     
-File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
-
-Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
-*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,26 +9,15 @@ using PagedList;
 
 namespace TK.Business.Dao
 {
-    /// <summary>
-	/// Author: Lê Tuấn Anh
-	/// Todo: 
-	/// </summary>
+    
     public partial class TblGroupRoleDao
     {
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: 
-        /// </summary>
+        
         public TblGroupRoleDao()
         {
 
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm đối tượng theo khóa chính
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        
         public TblGroupRole FindById(TblGroupRole obj)
         {
             try
@@ -64,12 +39,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo list gồm các đối tượng
-        /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+       
         public IEnumerable<TblGroupRole>FindByAll()
         {
             try
@@ -91,12 +61,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo đối tượng mới
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Create(TblGroupRole o)
         {
             try
@@ -119,12 +84,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: xóa đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Delete(TblGroupRole o)
         {
             try
@@ -148,12 +108,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: cập nhật đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>\
+       
         public void Update(TblGroupRole o)
         {
             try

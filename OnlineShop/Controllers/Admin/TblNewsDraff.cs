@@ -108,38 +108,48 @@ namespace TkSchoolNews.Controllers
         [Authorize]
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult TblNewsDraffCreate(TblNewsDraffCreateModel model ,string fileattach, string groupname="TIN TỨC", string hinhanh= @"/Images/defaultimage.jpg", bool ishome=false)
+        public ActionResult TblNewsDraffCreate(TblNewsDraffCreateModel model ,string fileattach , string hinhanh, string groupname="TIN TỨC", bool ishome=false)
         {
 
             try { 
             if (ModelState.IsValid)
             {
-                
-                TblNewsDraff o = new TblNewsDraff();
-                TblFileNewsDraff obj = new TblFileNewsDraff();
-                o.Title = model.title;
-                o.GroupNewsId = new TblGroupNewsDao().FindByName(groupname).GroupNewsId;
-                o.ShortContent = model.shortcontent;
-                o.Content = model.content;
-                o.BigImage = hinhanh;
-                o.IsHome = ishome;
-                o.IsEvent = model.isevent;
-                o.IsWeek = model.isweek;
-                o.CreateUser = this.GetUserName();
-                o.CreateDate = DateTime.Now;
-                o.Metatitle = (new Rewrite().RemoveUnicode(model.title)).Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace(".", "").Replace(" ", "-").ToLower();
-                var test = new Rewrite().RemoveUnicode(model.title).ToLower();
-                o.SubTitle = test;
-                new TblNewsDraffDao().Create(o);
-                if (fileattach != "")
-                {
-                    var res = new TblNewsDraffDao().FindByTitleFile(model.title);
-                    obj.NewsId = res.NewsId;
-                    obj.FileId = new TblFileDao().FindByName(fileattach).Id;
-                    new TblFileNewsDraffDao().Create(obj);
-                }
-                SetAlert("tạo thành công", "success");
-                return RedirectToAction("TblNewsDraffListIndex");
+                    var check = new TblNewsDraffDao().CheckTitle(model.title);
+                    if (check != null)
+                    {
+                        SetAlert("tin này đã tồn tại, bạn không thể tạo mới", "error");
+                        return RedirectToAction("TblNewsDraffCreate");
+                    }
+                    else
+                    {
+                        TblNewsDraff o = new TblNewsDraff();
+                        TblFileNewsDraff obj = new TblFileNewsDraff();
+                        o.Title = model.title;
+                        o.GroupNewsId = new TblGroupNewsDao().FindByName(groupname).GroupNewsId;
+                        o.ShortContent = model.shortcontent;
+                        o.Content = model.content;
+                        o.BigImage = hinhanh;
+                        o.IsHome = ishome;
+                        o.IsEvent = model.isevent;
+                        o.IsWeek = model.isweek;
+                        o.CreateUser = this.GetUserName();
+                        o.CreateDate = DateTime.Now;
+                        o.Metatitle = (new Rewrite().RemoveUnicode(model.title)).Replace("?", "").Replace(":", "").Replace(",", "").Replace("\"", string.Empty).Trim().Replace("'", "").Replace("/", "").Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "").Replace(".", "").Replace(" ", "-").ToLower();
+                        var test = new Rewrite().RemoveUnicode(model.title).ToLower();
+                        o.SubTitle = test;
+                        o.ReleaseDate = DateTime.Now;
+                        new TblNewsDraffDao().Create(o);
+                        var res = new TblNewsDraffDao().FindByTitleFile(model.title);
+
+                        if (fileattach != "")
+                        {
+                            obj.NewsId = res.NewsId;
+                            obj.FileId = new TblFileDao().FindByName(fileattach).Id;
+                            new TblFileNewsDraffDao().Create(obj);
+                        }
+                        SetAlert("tạo thành công", "success");
+                        return RedirectToAction("TblNewsDraffListIndex");
+                    }
             }
             return View();
             
@@ -178,6 +188,7 @@ namespace TkSchoolNews.Controllers
                 {
                     var list = new TblNewsDraffDao().FindById(numberid);
                     ViewBag.FileAttach = new TblFileDao().FindByNewsId(numberid);
+                    ViewBag.Cmt = new TblCommentDao().FindByNewsId(numberid);
                     if (list == null)
                     {
                         return RedirectToAction("AccessDeny", "Error");

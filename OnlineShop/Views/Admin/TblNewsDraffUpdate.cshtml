@@ -3,6 +3,7 @@
 @model TblNewsDraffModel
 @{
     TblFile file = (TblFile)ViewBag.FileAttach;
+    List<TblComment> comment = (List<TblComment>)ViewBag.Cmt;
     ViewBag.Title = "cập nhật tin tức";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -20,8 +21,8 @@
         <div id="menu1" class="tab-pane fade">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="panel panel-primary">
-                        <div class="panel-body">
+                    <div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
+                        <div >
                             <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
                             <h3>@Model.title</h3><br />
                             @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
@@ -36,7 +37,7 @@
                             <a href="@HttpUtility.UrlDecode(Url.Action("DownloadFile", "Home", new { @filepath = file.Directory, @filename = file.Name }))">@file.Name</a><p></p>
                                 }
                             }
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -144,6 +145,11 @@
             url: "/Admin/TblListFile"
         }).then(function (re) {
             $scope.listfile = re.data;
+        });
+    });
+    $(document).ready(function () {
+        $("#txtImage").click(function () {
+            alert("bạn vừa nhấp vào đường dẫn của ảnh, điểu này có thể gây lỗi hệ thống, hãy chọn nút chọn ảnh để upload ảnh lên server");
         });
     });
     var editor3 = CKEDITOR.replace('txtComment', {

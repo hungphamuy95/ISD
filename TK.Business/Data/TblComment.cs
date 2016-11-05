@@ -25,6 +25,14 @@ namespace TK.Business.Data
 
         public bool? IsAd { get; set; }
 
+        public DateTime? TimeVisit { get; set; }
+
+        [StringLength(150)]
+        public string UserQoute { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string Qoute { get; set; }
+
         public virtual TblNewsDraff TblNewsDraff { get; set; }
     }
 }

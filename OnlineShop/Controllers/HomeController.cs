@@ -13,7 +13,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using TK.Business.Model;
 
-namespace TkSchoolNews.Controllers
+namespace TkSchoolNews.Controllers  
 {
     public class HomeController : Controller
     {
@@ -160,7 +160,7 @@ namespace TkSchoolNews.Controllers
             }
             catch (Exception ex)
             {
-                logger.Info("Home" + "::DonwloadFile::" + ex.Message);
+                logger.Info("Home" + "::DownloadFile::" + ex.Message);
             }
         }
         [AllowAnonymous]
@@ -213,17 +213,29 @@ namespace TkSchoolNews.Controllers
                     var result = js.ReadObject(ms) as CapchaRespond;
                     if (result != null && result.Success) // SUCCESS!!!
                     {
-                        if (ModelState.IsValid)
+                        if (model.Content!=null)
                         {
-                            TblComment o = new TblComment();
-                            o.Name = model.Name;
-                            o.Content = model.Content;
-                            o.NewsId = id;
-                            o.CreateDate = DateTime.Now;
-                            o.IsAd = false;
-                            new TblCommentDao().Create(o);
-                            return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
-                        }
+                            if (model.Content.Length > 20)
+                            {
+                                TblComment o = new TblComment();
+                                o.Name = model.Name;
+                                o.Content = model.Content;
+                                o.NewsId = id;
+                                o.CreateDate = DateTime.Now;
+                                o.IsAd = false;
+                                o.TimeVisit = DateTime.Now;
+                                new TblCommentDao().Create(o);
+                                TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
+                                return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                            }
+                        TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
+                        TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</span>";
+                        return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                    }
+                        TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
+                        TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</span>";
+                        return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+
                     }
 
                 }
@@ -240,12 +252,14 @@ namespace TkSchoolNews.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ValidateInput(false)]
-        public ActionResult Quotation(string usercomment, string quote)
+        public ActionResult Quotation(string usercomment, string quote, long id, string metatitle)
         {
             try
             {
                 TblCommentModel o = new TblCommentModel();
-                o.Content = "<div style='border: 1px solid gray; border-radius:10px;'><blockquote><span><strong>bình luận của&nbsp;<span style='color:red;'>" + usercomment + "</span></strong></span><br>" + quote + "</blockquote></div>";
+                o.Content = quote;
+                o.newsid = id;
+                o.metatitle = metatitle;
                 return View(o);
             }
 
@@ -258,10 +272,15 @@ namespace TkSchoolNews.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Quotation(string metatitle, long id, TblCommentModel model, FormCollection form)
+        public ActionResult Quotation(string comment, string usercomment, string quote, string metatitle, long id, TblCommentModel model, FormCollection form)
         {
             try
             {
+                TblCommentModel obj = new TblCommentModel();
+                
+                obj.newsid = id;
+                obj.metatitle = metatitle;
+                obj.Content = quote;
                 const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
                 var secret = ConfigurationManager.AppSettings["SecretKey"];
                 var response = form["g-recaptcha-response"];
@@ -278,20 +297,36 @@ namespace TkSchoolNews.Controllers
                     var result = js.ReadObject(ms) as CapchaRespond;
                     if (result != null && result.Success) // SUCCESS!!!
                     {
-                        if (ModelState.IsValid)
+                        TblComment o = new TblComment();
+
+                        if (comment != "")
                         {
-                            TblComment o = new TblComment();
-                            o.Name = model.Name;
-                            o.Content = model.Content;
-                            o.NewsId = id;
-                            o.CreateDate = DateTime.Now;
-                            o.IsAd = false;
-                            new TblCommentDao().Create(o);
-                            return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                            if (comment.Length > 20)
+                            {
+                                o.Name = model.Name;
+                                o.Content = comment;
+                                o.NewsId = id;
+                                o.CreateDate = DateTime.Now;
+                                o.IsAd = false;
+                                o.TimeVisit = DateTime.Now;
+                                o.UserQoute = usercomment;
+                                o.Qoute = quote;
+                                new TblCommentDao().Create(o);
+                                TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
+                                return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                            }
+
+                            TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</span>";
+                            return View(obj);
                         }
+
+                        TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</span>";
+                        return View(obj);
                     }
                 }
-                return View();
+                
+                SetAlert("bạn phải xác nhận không phải là người máy", "error");
+                return View(obj);
             }
             catch (Exception ex)
             {

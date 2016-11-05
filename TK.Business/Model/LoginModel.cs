@@ -98,14 +98,25 @@ namespace TK.Business.Model
     }
     public class TblCommentModel
     {
-        [StringLength(250, MinimumLength = 5, ErrorMessage = "tên bạn phải ít nhất 5 kí tự")]
+        public long newsid { get; set; }
+        public string metatitle { get; set; }
+        [MinLength(5, ErrorMessage = "tên bạn phải ít nhất 5 kí tự")]
+        [MaxLength(50, ErrorMessage ="tên của bạn quá dài, hãy đảm bảo rằng chỉ có 50 kí tự")]
         [Required(ErrorMessage = "bạn phải nhập tên")]
         public string Name { get; set; }
 
         [Column(TypeName = "ntext")]
-        [StringLength(int.MaxValue, MinimumLength = 20, ErrorMessage = "bình luận của bạn phải có ít nhất 20 kí tự")]
-        [Required(ErrorMessage = "bạn chưa nhập bình luận")]
         public string Content { get; set; }
+        public string userquote { get; set; }
+        [Column(TypeName = "ntext")]
+        public string quote { get; set; }
+    }
+    public class CountComment
+    {
+        public long NewsId { get; set; }
+        public string Title { get; set; }
+        public int countcomment { get; set; }
+
     }
     public class TblFileModel
     {

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TK.Business.Dao;
 using TK.Business.Data;
 using TK.Business.Model;
+using TK.Business.Common;
 
 namespace TkSchoolNews.Controllers
 {
@@ -16,6 +17,7 @@ namespace TkSchoolNews.Controllers
         {
             try
             {
+                ViewBag.photo = new TblGalleryDao().FindByAll();
                 return View();
             }
             catch (Exception ex)
@@ -79,6 +81,7 @@ namespace TkSchoolNews.Controllers
                 o.ImageUrl = model.url;
                 o.CreateUser = GetUserName();
                 o.Createdate = DateTime.Now;
+                o.SubName = new Rewrite().RemoveUnicode(model.name);
                 new TblGalleryDao().Create(o);
                 SetAlert("cập nhật thành công", "success");
                 return RedirectToAction("TblGalleryListIndex", "Admin");
@@ -114,9 +117,10 @@ namespace TkSchoolNews.Controllers
                 o.Id = id;
                 o.Name = model.Name;
                 o.ImageUrl = model.ImageUrl;
+                o.SubName = new Rewrite().RemoveUnicode(model.Name);
                 new TblGalleryDao().Update(o);
                 SetAlert("cập nhật thành công", "success");
-                return RedirectToAction("TblGalleryListIndex", "Admin");
+                return RedirectToAction("TblGalleryUpdate", "Admin");
             }
             catch (Exception ex)
             {

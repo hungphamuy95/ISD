@@ -29,6 +29,9 @@ namespace TK.Business.Data
 
         public DateTime? EditDate { get; set; }
 
+        [StringLength(150)]
+        public string SubName { get; set; }
+
         public virtual TblGroupNew TblGroupNew { get; set; }
     }
 }

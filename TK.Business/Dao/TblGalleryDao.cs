@@ -1,18 +1,4 @@
-﻿/*
-Product Name		: TTNB 	
-Product Version 	: TTNB v1.0                                           	                     
-Product Owner   	: U1 Dev
-Developed By    	: Crystal, Inc
-
-Description: 
-Dự án xây dựng website quảng bá
-						
-File Name	   		: TblNewsDraffDao			   	     
-File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
-
-Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
-*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,28 +8,15 @@ using TK.Business.Data;
 
 namespace TK.Business.Dao
 {
-    /// <summary>
-    /// Author: Lê Tuấn Anh
-    /// Todo: tìm theo newsid
-    /// </summary>
-    /// <returns></returns>
+    
     public partial class TblGalleryDao
     {
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm theo newsid
-        /// </summary>
-        /// <returns></returns>
+        
         public TblGalleryDao()
         {
 
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm theo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         public TblGallery FindById(long id)
         {
             try
@@ -65,12 +38,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo list gồm các đối tượng
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         public IEnumerable<TblGallery> FindByAll()
         {
             try
@@ -92,12 +60,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo đối tượng mới
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Create(TblGallery o)
         {
             try
@@ -120,12 +83,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: xóa đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Delete(TblGallery o)
         {
             try
@@ -149,12 +107,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: cập nhật các thuộc tính của đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Update(TblGallery o)
         {
             try
@@ -164,6 +117,7 @@ namespace TK.Business.Dao
                     var res = db.TblGalleries.Where(x => x.Id == o.Id).SingleOrDefault();
                     res.Name = o.Name;
                     res.ImageUrl = o.ImageUrl;
+                    res.SubName = o.SubName;
                     db.SaveChanges();
                 }
             }

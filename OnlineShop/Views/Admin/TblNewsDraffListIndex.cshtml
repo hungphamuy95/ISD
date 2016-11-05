@@ -21,26 +21,26 @@
                     <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsEvent" /> tin hệ thống</label>
                     <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsWeek" /> tin tức đã phát hành</label>
                     <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="14" />tin tức</label>
-                    <br /><br />
+                    <br /><br />    
                 </form>
-
+                
             </div>
-
+            <br />
         </div>
         <div ng-show="listsearch">
             <div ng-show="!searchres.length" class="text-danger">
                 <h4>không tìm thấy kết quả nào</h4>
             </div>
             <div ng-show="searchres.length">
+                <br />
                 <table cellpadding="12" class="table table-bordered table-hover">
                     <tr>
                         <th>mã tin</th>
                         <th>tiêu đề</th>
-                        @*<th>nhóm tin</th>*@
                         <th>trang chủ</th>
                         <th>tin hệ thống</th>
                         <th>tuần</th>
-                        <th>hành động</th>
+                        <th>sửa | xóa | bình luận</th>
                     </tr>
                     <tr ng-repeat="sub in searchres | filter:searchText1 | startFrom:currentPage1*pageSize1 | limitTo:pageSize1" id="row_{{sub.NewsId}}">
                         <td>
@@ -49,9 +49,6 @@
                         <td>
                             {{sub.Title}}
                         </td>
-                        @*<td>
-                                {{sub.Name}}
-                            </td>*@
                         <td>
                             {{sub.IsHome?'có':'không'}}
                         </td>
@@ -68,7 +65,8 @@
                             }
                             <a data-ng-href="@urlsearch" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
                             &nbsp;<button class="btn btn-danger" ng-click="DeleteDetail(sub.NewsId)" ng-disabled="sub.IsHome==true || sub.IsEvent==true"><span class="glyphicon glyphicon-trash"></span></button>
-                            &nbsp;<a class="btn btn-primary" ng-disabled="sub.IsHome==true||sub.IsEvent==true" data-ng-href="#"><span class="glyphicon glyphicon-comment"></span></a>
+                            @*&nbsp;<a class="btn btn-primary" ng-disabled="sub.IsHome==true||sub.IsEvent==true" href="@Url.Action("TblCommentList","Admin")"><span class="glyphicon glyphicon-comment"></span></a>*@
+                            &nbsp;<a data-ng-href="@HttpUtility.UrlDecode(Url.Action("TblCommentList","Admin", new {@newsid="{{sub.NewsId}}" }))" class="btn btn-success" ng-if="sub.IsWeek==true"><span class="glyphicon glyphicon-comment"></span></a>
                         </td>
                     </tr>
                 </table>
@@ -76,7 +74,7 @@
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </button>
                 <label>&nbsp;số bản ghi&nbsp;</label>
-                <select ng-model="pageSize1">
+                <select ng-model="pageSize1" ng-change="btnchange1()">
                     <option value="5">5</option>
                     <option value="10" selected>10</option>
                     <option value="20">20</option>
@@ -89,6 +87,7 @@
             </div>
         </div>
         <div ng-show="listloadind">
+            <br />
             <table cellpadding="12" class="table table-bordered table-hover">
                 <tr>
                     <th>mã tin</th>
@@ -127,7 +126,8 @@
                         }
                         <a data-ng-href="@url" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
                         &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.id)" ng-disabled="uni.ishome==true || uni.isevent==true"><span class="glyphicon glyphicon-trash"></span></button>
-                        &nbsp;<a class="btn btn-primary" ng-disabled="uni.ishome==true||uni.isevent==true" data-ng-href="#"><span class="glyphicon glyphicon-comment"></span></a>
+                        @*&nbsp;<a class="btn btn-primary" ng-disabled="uni.ishome==true||uni.isevent==true" href="@Url.Action("TblCommentList", "Admin")"><span class="glyphicon glyphicon-comment"></span></a>*@
+                        &nbsp;<a data-ng-href="@HttpUtility.UrlDecode(Url.Action("TblCommentList","Admin", new {@newsid="{{uni.id}}" }))" ng-if="uni.isweek==true" class="btn btn-success"><span class="glyphicon glyphicon-comment"></span></a>
                     </td>
                 </tr>
             </table>
@@ -137,7 +137,7 @@
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </button>
             <label>&nbsp;số bản ghi&nbsp;</label>
-            <select ng-model="pageSize">
+            <select ng-model="pageSize" ng-change="btnchange()">
                 <option value="5">5</option>S
                 <option value="10" selected>10</option>
                 <option value="20">20</option>
@@ -150,7 +150,6 @@
         </div>
         <br /><br />
         <a href="@Url.Action("TblNewsDraffCreate","Admin")" class="btn btn-info">tạo mới</a>
-
     </div>
 </div>
 <br />
@@ -162,12 +161,17 @@
     */
     var app = angular.module("myApp", ['ngSanitize']);
     app.controller("myCtrl", function ($scope, $http, $window) {
+        $scope.btnchange = function () {
+            $scope.currentPage = 0;
+        };
+        $scope.btnchange1 = function () {
+            $scope.currentPage1 = 0;
+        };
         $scope.listsearch = false;
         $scope.listloadind = true;
         $scope.title = false;
         $scope.group = false;
         $scope.loading = true;
-        $scope.fileattach = [];
             $http({
                 method: "POST",
                 url: "/Admin/TblNewsDraffList"

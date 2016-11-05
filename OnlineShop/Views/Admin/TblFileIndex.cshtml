@@ -11,12 +11,8 @@
             <div class="col-lg-6">
                 <br />
                 <form role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText.$"  id="txtsearch" />
-                        <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
-                    </div>
+                  <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText" ng-change="txtsearch()" id="txtsearch" />
                 </form>
-                
             </div>
         </div>
         <br />
@@ -31,10 +27,16 @@
                 @{
                     var url = Url.Action("DownloadFile", "Admin", new { @filepath = "{{uni.Directory}}", @filename = "{{uni.Name}}" });
                     url = HttpUtility.UrlDecode(url);
+                    var name= "App_Data/Uploads/{{uni.Name}}";
+                    var urlpreview = "http://docs.google.com/gview?url=http://localhost:63277/"+@name+"";
+                    urlpreview = HttpUtility.UrlDecode(urlpreview);
                 }
 
                 <td><a data-ng-href="@url">{{uni.Name}}</a></td>
                 <td><button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button></td>
+            </tr>
+            <tr ng-show="(unit | filter:searchText).length==0">
+                <td colspan="3" style="text-align:center;"><span style="color:red;">không tìm thấy bản ghi nào</span></td>
             </tr>
         </table>
         <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
@@ -42,7 +44,7 @@
             <span class="glyphicon glyphicon-chevron-left"></span>
         </button>
         <label>&nbsp;số bản ghi&nbsp;</label>
-        <select ng-model="pageSize">
+        <select ng-model="pageSize" ng-change="btnchange()">
             <option value="5">5</option>
             <option value="10" selected>10</option>
             <option value="20">20</option>
@@ -79,13 +81,19 @@
     */
     var app = angular.module("myApp", ['ngSanitize']);
     app.controller("myCtrl", function ($scope, $http, $window) {
+        $scope.txtsearch = function () {
+            $scope.currentPage = 0;
+        };
+        $scope.btnchange = function () {
+            $scope.currentPage = 0;
+        };
         $http({
             method: "POST",
             url: "/Admin/TblFileList"
         }).then(function (response) {
                 $scope.unit = response.data;
                 $scope.currentPage = 0;
-                $scope.pageSize = 5;
+                $scope.pageSize = 10;
                 $scope.numberOfPages = function () {
                     return Math.ceil($scope.unit.length / $scope.pageSize);
                 }

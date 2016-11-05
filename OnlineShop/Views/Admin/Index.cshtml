@@ -1,5 +1,9 @@
 ﻿@using System.Globalization;
 @using System.Threading;
+@using TK.Business.Model;
+@{ 
+    List<CountComment> countcmt = (List<CountComment>)ViewBag.CmtCount;
+}
 @*<h4><strong>>>&nbsp;</strong><a href="@Url.Action("TblNewsDraffListIndex","Admin")">quản lý tin tức</a></h4>
 <h4><strong>>>&nbsp;</strong><a href="@Url.Action("TblChartUpdate","Admin")">quản lý slide ảnh</a></h4>
 <h4><strong>>>&nbsp;</strong><a href="@Url.Action("TblFileIndex","Admin")">quản lý tệp</a></h4>
@@ -55,7 +59,7 @@
     <div class="nav navbar-default" style="background:#3598db;">
         <br />
     </div>
-    <div id="wrapper" style="height:80%;">
+    <div id="wrapper" style="height:70%;">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             
@@ -137,14 +141,47 @@
                     <div class="col-lg-9">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h4>thống kê lượt ghé thăm website (template, chưa có dữ liệu)</h4>
+                                <h4>quản lý bình luận</h4>
                             </div>
                             <div class="row">
-                                <div class="panel-body">
-                                    <br />
-                                    <div id="myfirstchart"></div>
-                                </div>
-                            </div>
+                               
+    <br />
+    @if (countcmt.Count == 0)
+    {
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 style="color:red; text-align:center;">không có bình luận mới</h3>
+                </div>
+            </div>
+            </div>
+            }
+            else
+            {
+            <div class="panel-body" style="overflow:auto; height:300px;">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>tiêu đề</th>
+                            <th>bình luận mới</th>
+                            <th>xem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in countcmt)
+                {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.countcomment</td>
+                                <td><a href="@Url.Action("TblCommentList", "Admin", new { @newsid = ""+item.NewsId+"" })" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+
+        </div>
                         </div>
                     </div>
                 </div>
@@ -157,9 +194,9 @@
         <div class="nav navbar-default" style="background:#1c3e61;">
             <br />
             <div class="container">
-                <div class="col-lg-6"><span style="color:white;">Bản quyền &copy;@DateTime.Now.Year thuộc về Trường trung học cơ sở Thị trấn Tứ Kỳ<br />Thị trấn Tứ Kỳ, huyện Tứ Kỳ, tỉnh Hải Dương</span><br />&nbsp;</div>
+                <div class="col-lg-6"><span style="color:white;">&copy;@DateTime.Now.Year Trường trung học cơ sở Thị trấn Tứ Kỳ<br />Thị trấn Tứ Kỳ, huyện Tứ Kỳ, tỉnh Hải Dương</span><br />&nbsp;</div>
                 <div class="col-lg-2"></div>
-                <div class="col-lg-4"><span style="color:white;">Phát triển bởi công ty Crystal</span><br />&nbsp;</div>
+                <div class="col-lg-4"><span style="color:white;"></span><br />&nbsp;</div>
             </div>
         </div>
     </div>
@@ -198,43 +235,43 @@
             if (i < 10) { i = "0" + i };
             return i;
         }
-        $(document).ready(function () {
-            barChart();
-            lineChart();
-            areaChart();
-            donutChart();
+        //$(document).ready(function () {
+        //    barChart();
+        //    lineChart();
+        //    areaChart();
+        //    donutChart();
 
-            $(window).resize(function () {
-                window.barChart.redraw();
-                window.lineChart.redraw();
-                window.areaChart.redraw();
-                window.donutChart.redraw();
-            });
-        });
+        //    $(window).resize(function () {
+        //        window.barChart.redraw();
+        //        window.lineChart.redraw();
+        //        window.areaChart.redraw();
+        //        window.donutChart.redraw();
+        //    });
+        //});
        
-            new Morris.Line({
-                // ID of the element in which to draw the chart.
-                element: 'myfirstchart',
-                // Chart data records -- each entry in this array corresponds to a point on
-                // the chart.
-                data: [
-                  { year: '2008', value: 20 },
-                  { year: '2009', value: 10 },
-                  { year: '2010', value: 5 },
-                  { year: '2011', value: 5 },
-                  { year: '2012', value: 20 },
-                  { year: '2013', value: 100 },
+        //    new Morris.Line({
+        //        // ID of the element in which to draw the chart.
+        //        element: 'myfirstchart',
+        //        // Chart data records -- each entry in this array corresponds to a point on
+        //        // the chart.
+        //        data: [
+        //          { year: '2008', value: 20 },
+        //          { year: '2009', value: 10 },
+        //          { year: '2010', value: 5 },
+        //          { year: '2011', value: 5 },
+        //          { year: '2012', value: 20 },
+        //          { year: '2013', value: 100 },
             
-                ],
-                // The name of the data record attribute that contains x-values.
-                xkey: 'year',
-                // A list of names of data record attributes that contain y-values.
-                ykeys: ['value'],
-                // Labels for the ykeys -- will be displayed when you hover over the
-                // chart.
-                labels: ['Value'],
-                resize:true
-            });
+        //        ],
+        //        // The name of the data record attribute that contains x-values.
+        //        xkey: 'year',
+        //        // A list of names of data record attributes that contain y-values.
+        //        ykeys: ['value'],
+        //        // Labels for the ykeys -- will be displayed when you hover over the
+        //        // chart.
+        //        labels: ['Value'],
+        //        resize:true
+        //    });
 
     </script>
 </body>

@@ -1,17 +1,4 @@
-﻿/*
-Product Name		: TTNB 	
-Product Version 	: TTNB v1.0                                           	                     
-Product Owner   	: U1 Dev
-Developed By    	: Crystal, Inc
-
-Description: 
-Dự án xây dựng website quảng bá
-						
-File Name	   		: TblNewsDraffDao			   	     
-File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
-
-Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
-*/
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,19 +11,10 @@ using TK.Business.Model;
 
 namespace TK.Business.Dao
 {
-    /// <summary>
-	/// Author: Lê Tuấn Anh
-	/// Todo: 
-	/// </summary>
+    
     public partial class TblNewsDraffDao
     {
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin
-        /// </summary>
-        /// /// <param name="codeNews"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
+        
         public IEnumerable<TblNewsDraff> FindBy(decimal codeNews, decimal status)
         {
             try
@@ -59,11 +37,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo tin hệ thống
-        /// </summary>
-        /// <returns></returns>
+        
         public IEnumerable<TblNewsDraff> FindByNewsEvent()
         {
             try
@@ -87,11 +61,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByNewsEvent::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo trang chủ 
-        /// </summary>
-        /// <returns></returns>
+        
         public IEnumerable<TblNewsDraff> FindByNewsHome()
         {
             try
@@ -109,13 +79,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByNewsHome" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: lấy dữ liệu ra trang tin tức
-        /// </summary>
-        /// /// <param name="page"></param>
-        /// <param name="pagesize"></param>
-        /// <returns></returns>
+        
         public IEnumerable<TblNewsDraff> FindByNewsHotWeek(int page, int pagesize)
         {
             try
@@ -134,12 +98,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByNewHotWeek::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: xem chi tiết tin tức
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+       
         public TblNewsDraff FindByDetail(long id)
         {
             try
@@ -157,12 +116,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByDetail::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo nhóm tin
-        /// </summary>
-        /// <param name="groupNewsId"></param>
-        /// <returns></returns>
+        
         public TblNewsDraff FindByGroupNew(long groupNewsId)
         {
             try
@@ -180,13 +134,25 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByGroupNew::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo title
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="category"></param>
-        /// <returns></returns>
+        public TblNewsDraff CheckTitle(string title)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    var res= db.TblNewsDraffs.Where(x => x.Title == title).SingleOrDefault();
+                    return res;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                    throw new Exception("TBLNEWDRAFFDao::CheckTitle::" + ex.Message);
+                else
+                    throw new Exception("TBLNEWDRAFFDao::CheckTitle::" + ex.InnerException.Message);
+            }
+        }
+       
         public IEnumerable<TblNewsDraffModelSearch> FindByTitle(string title, string category)
         {
             try
@@ -214,12 +180,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByTitle::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo category
-        /// </summary>
-        /// <param name="cate"></param>
-        /// <returns></returns>
+       
         public IEnumerable<TblNewsDraffModelSearch>FindByCate(string cate)
         {
             try
@@ -245,12 +206,7 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByCate::" + ex.InnerException.Message);
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm tin theo tên file
-        /// </summary>
-        /// <param name="title"></param>
-        /// <returns></returns>
+        
         public TblNewsDraff FindByTitleFile(string title)
         {
             try

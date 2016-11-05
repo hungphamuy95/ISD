@@ -1,18 +1,4 @@
-﻿/*
-Product Name		: TTNB 	
-Product Version 	: TTNB v1.0                                           	                     
-Product Owner   	: U1 Dev
-Developed By    	: Crystal, Inc
-
-Description: 
-Dự án xây dựng website quảng bá
-						
-File Name	   		: TblChartDao			   	     
-File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
-
-Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
-*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,26 +10,15 @@ using TK.Business.Model;
 
 namespace TK.Business.Dao
 {
-    /// <summary>
-	/// Author: Lê Tuấn Anh
-	/// Todo: 
-	/// </summary>
+    
     public partial class TblFileDao
     {
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: 
-        /// </summary>
+        
         public TblFileDao()
         {
 
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm đối tượng theo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         public TblFile FindById(long id)
         {
             try
@@ -65,12 +40,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo list gồm các đối tượng
-        /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+        
         public IEnumerable<TblFile> FindByAll()
         {
             try
@@ -92,12 +62,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo list gồm các đối tượng
-        /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+        
         public IEnumerable<TblFileModel> FindByModel()
         {
             try
@@ -120,12 +85,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo đối tượng mới
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Create(TblFile o)
         {
             try
@@ -148,12 +108,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: xóa đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        
         public void Delete(TblFile o)
         {
             try
@@ -177,12 +132,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm đối tượng theo name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        
         public TblFile FindByName(string name)
         {
             try
@@ -204,12 +154,7 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm đối tượng theo newsid
-        /// </summary>
-        /// <param name="newsid"></param>
-        /// <returns></returns>
+        
         public TblFile FindByNewsId(long newsid)
         {
             try

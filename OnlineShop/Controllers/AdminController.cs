@@ -42,6 +42,7 @@ namespace TkSchoolNews.Controllers
         public ActionResult Index()
         {
             ViewBag.UserName = GetUserName();
+            ViewBag.CmtCount = new TblCommentDao().CountCmt();
             return View();
         }
         [Authorize]

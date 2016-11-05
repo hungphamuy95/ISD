@@ -1,19 +1,4 @@
-﻿/*
-Product Name		: TTNB 	
-Product Version 	: TTNB v1.0                                           	                     
-Product Owner   	: U1 Dev
-Developed By    	: Crystal, Inc
-
-Description: 
-Dự án xây dựng website quảng bá
-						
-File Name	   		: TblNewsDraffDao			   	     
-File Description 	: Cung cấp các phương thức kết nối và các thao tác nền tảng với cơ sở dữ liệu
-
-Copyright(C) 2016 by Crystal, Inc. All Rights Reserved 	
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,27 +9,13 @@ using TK.Business.Model;
 
 namespace TK.Business.Dao
 {
-    /// <summary>
-	/// Author: Lê Tuấn Anh
-	/// Todo: 
-	/// </summary>
+   
     public partial class TblNewsDraffDao
     {
-        
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: 
-        /// </summary>
         public TblNewsDraffDao()
         {
             
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tìm kiếm đối tượng theo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public TblNewsDraffModel FindById(long id)
         {
             try
@@ -67,12 +38,6 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo list gồm các đối tượng
-        /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
         public IEnumerable<TblNewsDraffModel> FindByAll()
         {
             try
@@ -80,7 +45,7 @@ namespace TK.Business.Dao
                 using (TkSchoolDbContext db = new TkSchoolDbContext())
                 {
 
-                    var query = from groupnews in db.TblGroupNews.AsEnumerable() join news in db.TblNewsDraffs.AsEnumerable() on groupnews.GroupNewsId equals news.GroupNewsId select new TblNewsDraffModel {id=news.NewsId, title = news.Title, ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek };
+                    var query = from news in db.TblNewsDraffs.AsEnumerable() select new TblNewsDraffModel {id=news.NewsId, title = news.Title, ishome = news.IsHome, isevent = news.IsEvent, isweek = news.IsWeek };
                     return query.ToList();
                     
                 }
@@ -97,12 +62,6 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: tạo đối tượng mới
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
         public void Create(TblNewsDraff o)
         {
             try
@@ -125,12 +84,6 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: xóa đối tượng
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
         public void Delete(TblNewsDraff o)
         {
             try
@@ -154,12 +107,29 @@ namespace TK.Business.Dao
                 }
             }
         }
-        /// <summary>
-        /// Author: Lê Tuấn Anh
-        /// Todo: cập nhật đối tượng
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>\
+        public void UpdateReleasdate(TblNewsDraff obj)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    var res = db.TblNewsDraffs.Where(s => s.NewsId == obj.NewsId).SingleOrDefault();
+                    res.ReleaseDate = obj.ReleaseDate;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                {
+                    throw new Exception("TblNewsDraffDao::UpdateReleasdate::" + ex.Message);
+                }
+                else
+                {
+                    throw new Exception("TblNewsDraffDao::UpdateReleasdate::" + ex.InnerException.Message);
+                }
+            }
+        }
         public void Update(TblNewsDraff obj)
         {
             try
@@ -175,6 +145,7 @@ namespace TK.Business.Dao
                     res.IsWeek = obj.IsWeek;
                     res.Metatitle = obj.Metatitle;
                     res.SubTitle = obj.SubTitle;
+                    //res.ReleaseDate = obj.ReleaseDate;
                     db.SaveChanges();
                 }
             }

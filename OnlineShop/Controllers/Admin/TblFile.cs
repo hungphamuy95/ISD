@@ -60,6 +60,7 @@ namespace TkSchoolNews.Controllers
                         o.Directory = "~/App_Data/Uploads/";
                         o.CreateUser = GetUserName();
                         o.CreateDate = DateTime.Now;
+                        o.SubName = new Rewrite().RemoveUnicode(filename);
                         new TblFileDao().Create(o);
                         SetAlert("tải thành công", "success");
                         return RedirectToAction("TblFileIndex");

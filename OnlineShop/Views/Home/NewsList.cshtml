@@ -16,12 +16,29 @@
                             <tr>
                                 <td>
                                     <a href="@Url.Action("NewsDetail","Home", new { @id=item.NewsId.ToString(), @metatitle=HttpUtility.UrlDecode(item.Metatitle)})">
-                                        <div class="col-lg-5"><img src="@item.BigImage" style="height:180px;width:100%" /></div>
-                                        <div class="col-lg-7">
-                                            <h3>@item.Title</h3>
-                                            <h6><span style="color:darkslategrey">@Convert.ToDateTime(item.CreateDate).ToString("dd/MM/yyyy")</span></h6>
-                                            <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(item.ShortContent))</span>
-                                        </div>
+                                        
+                                        @if (item.BigImage == "")
+                                        {
+                                            <div class="col-lg-5">
+                                                <img src="~/Images/defaultimage.jpg" style="width:100%;" />
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <h3>@item.Title</h3>
+                                                <h6><span style="color:darkslategrey">@Convert.ToDateTime(item.CreateDate).ToString("dd/MM/yyyy")</span></h6>
+                                                <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(item.ShortContent))</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-lg-5">
+                                                <img src="@item.BigImage" style="width:100%" />
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <h3>@item.Title</h3>
+                                                <h6><span style="color:darkslategrey">@Convert.ToDateTime(item.CreateDate).ToString("dd/MM/yyyy")</span></h6>
+                                                <span style="color:darkslategrey;">@Html.Raw(System.Web.HttpUtility.HtmlDecode(item.ShortContent))</span>
+                                            </div>
+                                        }
                                     </a>
                                 </td>
                             </tr>

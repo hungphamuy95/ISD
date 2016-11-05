@@ -36,6 +36,9 @@ namespace TK.Business.Data
 
         public DateTime? EditDate { get; set; }
 
+        [StringLength(500)]
+        public string SubName { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TblFileNewsDraff> TblFileNewsDraffs { get; set; }
     }

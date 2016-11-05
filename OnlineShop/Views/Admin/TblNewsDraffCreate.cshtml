@@ -54,7 +54,7 @@
                             <th>hình ảnh</th>
                             <td>
                                 <div class="col-xs-4">
-                                    <input type="text" name="image" id="txtImage" class="form-control form-fixer" />
+                                    <input type="text" name="hinhanh" id="txtImage" class="form-control form-fixer" />
                                 </div>
                                 <button id="btnselect" class="btn btn-success">chọn ảnh</button>
                             </td>
@@ -103,6 +103,11 @@
              url: "/Admin/TblListFile"
          }).then(function (re) {
              $scope.listfile = re.data;
+         });
+     });
+     $(document).ready(function () {
+         $("#txtImage").click(function () {
+             alert("bạn vừa nhấp vào đường dẫn của ảnh, điểu này có thể gây lỗi hệ thống, hãy chọn nút chọn ảnh để upload ảnh lên server");
          });
      });
  </script>

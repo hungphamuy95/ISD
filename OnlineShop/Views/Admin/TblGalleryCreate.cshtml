@@ -35,5 +35,12 @@
     <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblGalleryListIndex","Admin")">quản lý album ảnh</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">tạo ảnh mới</span>
     <br />&nbsp;
 </div>
+<script>
+    $(document).ready(function () {
+        $("#txtImage").click(function () {
+            alert("bạn vừa nhấp vào đường dẫn của ảnh, điểu này có thể gây lỗi hệ thống, hãy chọn nút chọn ảnh để upload ảnh lên server");
+        });
+    });
+</script>
    
 

@@ -1,6 +1,7 @@
 ﻿@using TK.Business.Data
 @{
     ViewBag.Title = "quản lý album ảnh";
+    List<TblGallery> falcol = (List<TblGallery>)ViewBag.photo;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="container">
@@ -10,10 +11,7 @@
             <div class="col-lg-6">
                 <br />
                 <form role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText.$" id="txtsearch" />
-                        <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
-                    </div>
+                    <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchText" ng-change="txtsearch()" id="txtsearch" />
                 </form>
             </div>
         </div>
@@ -22,13 +20,27 @@
             <tr>
                 <th>mã ảnh</th>
                 <th>tên ảnh</th>
-                <th>đường dẫn</th>
+                <th>thumbnail</th>
                 <th>hành động</th>
             </tr>
             <tr ng-repeat="uni in unit | filter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize" id="row_{{uni.Id}}">
                 <td>{{uni.Id}}</td>
                 <td>{{uni.Name}}</td>
-                <td>{{uni.ImageUrl}}</td>
+                <td><div ng-click="btnzoom()"><img class="myImg" id="lblthumbnail" ng-src="{{uni.ImageUrl}}" alt="{{uni.Name}}" width="100" /></div>
+
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close" onclick="document.getElementById('myModal').style.display='none'"><span class="glyphicon glyphicon-remove" style="font-size:50px; color:red;"></span></span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01" ng-src="{{uni.ImageUrl}}" ng-show="imgzoom">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption" style="font-size:20pt;" ng-show="capzoom">{{uni.Name}}</div>
+                    
+</div>
+              </td>
                 <td>
                     @{
                         var url = Url.Action("TblGalleryUpdate", "Admin", new { @id = "{{uni.Id}}" });
@@ -38,13 +50,16 @@
                     &nbsp;<button class="btn btn-danger" ng-click="Delete(uni.Id)"><span class="glyphicon glyphicon-trash"></span></button>
                 </td>
             </tr>
+            <tr ng-show="(unit | filter:searchText).length==0">
+                <td colspan="4" style="text-align:center;"><span style="color:red;">không tìm thấy bản ghi nào</span></td>
+            </tr>
         </table>
         <div ng-show="loading"><img src="~/Images/hourglass.gif" alt="loading" style="width:50px;height:50px;margin:auto;" /></div>
         <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-primary">
             <span class="glyphicon glyphicon-chevron-left"></span>
         </button>
         <label>&nbsp;số bản ghi&nbsp;</label>
-        <select ng-model="pageSize">
+        <select ng-model="pageSize" ng-change="btnchange()">
             <option value="5">5</option>
             <option value="10" selected>10</option>
             <option value="20">20</option>
@@ -63,7 +78,15 @@
 </div>
 <script>
     var app = angular.module("myApp", ['ngSanitize']);
-    app.controller("myCtrl", function ($scope, $http, $window) {
+    app.controller("myCtrl", function ($scope, $http, $window, $compile) {
+        $scope.imgzoom = false;
+        $scope.capzoom = false;
+        $scope.txtsearch = function () {
+            $scope.currentPage = 0;
+        };
+        $scope.btnchange = function () {
+            $scope.currentPage = 0;
+        };
         $scope.loading = true;
         $http({
             method: "POST",
@@ -93,6 +116,30 @@
                 });
             }
         }
+        
+        //$scope.btnzoom = function () {
+        //    var modal = document.getElementById('myModal');
+        //    var modalImg = document.getElementById("img01");
+        //    var captionText = document.getElementById("caption");
+        //    modal.style.display = "block";
+        //    modalImg.src = this.src;
+        //    captionText.innerHTML = this.alt;
+        //    // Get the <span> element that closes the modal
+        //    var span = document.getElementsByClassName("close")[0];
+           
+        //    // When the user clicks on <span> (x), close the modal
+        //    span.onclick = function () {
+        //        modal.style.display = "none";
+        //        //do some thing
+        //        $scope.imgzoom = true;
+        //        $scope.capzoom = true;
+        //    }
+        //    $(document).on('keyup', function (evt) {
+        //        if (evt.keyCode == 27) {
+        //            modal.style.display = "none";
+        //        }
+        //    });
+        //};
     });
     app.filter('startFrom', function () {
         return function (input, start) {
@@ -100,7 +147,7 @@
             start = +start;
             return input.slice(start);
         }
-    });
+    });       
 </script>
 
 

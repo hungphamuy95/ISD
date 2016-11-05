@@ -4,17 +4,31 @@
     ViewBag.Title = "QUẢN LÝ BÌNH LUẬN";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <div class="container">
+    <a href="@Url.Action("TblCommentList", "Admin",new {@newsid =Model.newsid })"><span style="font-size:12pt" class="glyphicon glyphicon-arrow-left"></span> trở lại nội dung tin</a>
+    <br /><br />
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         <div class="table-responsive">
             <table class="table">
                 <tr>
+                    <th>trích dẫn</th>
+                    <td>
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Content))
+                    </td>
+                </tr>
+                <tr>
                     <th>bình luận của bạn</th>
                     <td>
-                        <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
-                        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                        <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />
+                        <textarea name="comment" id="txtComment"></textarea>
+                        <br />
+                        @if (TempData["alertempty"] != null)
+                        {
+                            @Html.Raw(TempData["alertempty"].ToString())
+                        }
                     </td>
                 </tr>
                 <tr>
@@ -36,15 +50,15 @@
             width: '100%',
             skin: 'office2013',
             toolbar: [
+            { name: 'document', items: ['Source', 'NewPage'] },
             { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
             { name: 'links', items: ['Link', 'Unlink'] },
             { name: 'insert', items: ['Image', 'Smiley'] },
-            { name: 'paragraph', items: ['Blockquote'] }
             ],
             smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
             smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif','happens.png'],
-        smiley_descriptions:[':adore:',':boom:',':ah:',':amazed:',':angry:',':badsmelly:']
-        });
+
+    });
 </script>
 
 
