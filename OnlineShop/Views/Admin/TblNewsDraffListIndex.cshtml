@@ -15,6 +15,7 @@
                         <input type="text" class="form-control" placeholder="tìm kiếm" name="searchcontent" ng-model="searchcontent" id="txtsearch" />
                         <div class="input-group-btn"><button class="btn btn-primary" ng-click="sot(searchcontent, cate)"><span class="glyphicon glyphicon-search"></span></button></div>
                     </div>
+                    <div ng-show="loadingsearch" class="overlay"></div>
                     <br />
                     <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="All" />tất cả</label>
                     <label class="radio-inline"><input type="radio" name="date" ng-model="cate" value="IsHome" /> trang chủ</label>
@@ -186,6 +187,7 @@
                 $scope.loading = false;
             });
             $scope.sot = function (_searchcontent, _category) {
+                $scope.loadingsearch = true;
                 $http({
                     method: "POST",
                     url: "/Admin/SearchResult",
@@ -199,7 +201,7 @@
                 $scope.numberOfPages1 = function () {
                     return Math.ceil($scope.searchres.length / $scope.pageSize1);
                 }
-                
+                //$scope.loadingsearch = false;
                 $scope.listloadind = false;
                 $scope.listsearch = true;
             });

@@ -1,4 +1,5 @@
-﻿@using PagedList.Mvc
+﻿
+@using PagedList.Mvc
 @using TK.Business.Data
 @{
     ViewBag.Title = "Tin tức đó đây";
@@ -17,7 +18,7 @@
                                 <td>
                                     <a href="@Url.Action("NewsDetail","Home", new { @id=item.NewsId.ToString(), @metatitle=HttpUtility.UrlDecode(item.Metatitle)})">
                                         
-                                        @if (item.BigImage == "")
+                                        @if (item.BigImage == "" || item.BigImage == null)
                                         {
                                             <div class="col-lg-5">
                                                 <img src="~/Images/defaultimage.jpg" style="width:100%;" />
@@ -49,6 +50,20 @@
             @Html.PagedListPager(listnews, Page => Url.Action("NewsList", new { Page }))
         </div>
     </div>
+    <div class="col-lg-4">
+        <div class="affix">
+            <div id="fb-root"></div>
+            <script>
+                (function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=686794621468795";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
+            <div class="fb-page" data-href="https://www.facebook.com/SMandHBO/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+        </div>
+        </div>
 </div>
 <br />
 

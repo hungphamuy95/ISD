@@ -38,6 +38,27 @@ namespace TK.Business.Dao
                 }
             }
         }
+        public TblGallery FindByName(string name)
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    return db.TblGalleries.Where(x => x.Name == name).SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                {
+                    throw new Exception("TblGallery::FindByName::" + ex.Message);
+                }
+                else
+                {
+                    throw new Exception("TblGallery::FindByName::" + ex.InnerException.Message);
+                }
+            }
+        }
         
         public IEnumerable<TblGallery> FindByAll()
         {

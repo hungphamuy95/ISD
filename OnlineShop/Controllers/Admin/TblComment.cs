@@ -37,8 +37,7 @@ namespace TkSchoolNews.Controllers
             try {
                 if (model.Content!=null)
                 {
-                    if (model.Content.Length > 20)
-                    {
+                    
                         TblComment o = new TblComment();
                         o.Name = GetUserName();
                         o.Content = model.Content;
@@ -47,10 +46,7 @@ namespace TkSchoolNews.Controllers
                         o.IsAd = true;
                         new TblCommentDao().Create(o);
                         return RedirectToAction("TblCommentList", "Admin", new { newsid = newsid });
-                    }
-                    TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
-                    TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</div>";
-                    return RedirectToAction("TblCommentList", "Admin", new { newsid = newsid });
+                    
                 }
                 TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
                 TempData["alertempty"]= "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</div>";
@@ -115,8 +111,7 @@ namespace TkSchoolNews.Controllers
                 obj.newsid = id;
                 if (comment != "")
                 {
-                    if (comment.Length > 20)
-                    {
+                    
                         TblComment o = new TblComment();
                         o.Name = GetUserName();
                         o.Content = comment;
@@ -128,9 +123,7 @@ namespace TkSchoolNews.Controllers
                         o.TimeVisit = DateTime.Now;
                         new TblCommentDao().Create(o);
                         return RedirectToAction("TblCommentList", "Admin", new { newsid = id });
-                    }
-                    TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</span>";
-                    return View(obj);
+                    
                 }
                 TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</span>";
                 return View(obj);

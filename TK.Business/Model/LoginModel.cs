@@ -38,9 +38,8 @@ namespace TK.Business.Model
         [Required(ErrorMessage = "bạn không được để trống nôi dung sơ lược", AllowEmptyStrings = false)]
         public string shortcontent { get; set; }
         public long? groupnewsid { get; set; }
-        [Required(ErrorMessage ="bạn không được để trống nội dung", AllowEmptyStrings =false)]
+        [Required(ErrorMessage ="bạn không được để trống nội dung chính", AllowEmptyStrings =false)]
         public string content { get; set; }
-        [Required(ErrorMessage = "bạn không trống đường dẫn hình ảnh", AllowEmptyStrings = false)]
         public string image { get; set; }
         public bool ishome { get; set; }
         public bool isevent { get; set; }

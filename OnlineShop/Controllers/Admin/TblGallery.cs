@@ -76,14 +76,23 @@ namespace TkSchoolNews.Controllers
         {
             try
             {
-                TblGallery o = new TblGallery();
-                o.Name = model.name;
-                o.ImageUrl = model.url;
-                o.CreateUser = GetUserName();
-                o.Createdate = DateTime.Now;
-                o.SubName = new Rewrite().RemoveUnicode(model.name);
-                new TblGalleryDao().Create(o);
-                SetAlert("cập nhật thành công", "success");
+                var check = new TblGalleryDao().FindByName(model.name);
+                if (check != null)
+                {
+                    SetAlert("tên đã tồn tại, vui lòng nhập tên khác", "error");
+                    return RedirectToAction("TblGalleryCreate", "Admin");
+                }
+                else
+                {
+                    TblGallery o = new TblGallery();
+                    o.Name = model.name;
+                    o.ImageUrl = model.url;
+                    o.CreateUser = GetUserName();
+                    o.Createdate = DateTime.Now;
+                    o.SubName = new Rewrite().RemoveUnicode(model.name);
+                    new TblGalleryDao().Create(o);
+                    SetAlert("tạo mới thành công", "success");
+                }
                 return RedirectToAction("TblGalleryListIndex", "Admin");
             }
             catch (Exception ex)

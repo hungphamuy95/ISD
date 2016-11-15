@@ -215,8 +215,7 @@ namespace TkSchoolNews.Controllers
                     {
                         if (model.Content!=null)
                         {
-                            if (model.Content.Length > 20)
-                            {
+                            
                                 TblComment o = new TblComment();
                                 o.Name = model.Name;
                                 o.Content = model.Content;
@@ -227,10 +226,7 @@ namespace TkSchoolNews.Controllers
                                 new TblCommentDao().Create(o);
                                 TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
                                 return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
-                            }
-                        TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
-                        TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</span>";
-                        return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
+                            
                     }
                         TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
                         TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</span>";
@@ -301,8 +297,7 @@ namespace TkSchoolNews.Controllers
 
                         if (comment != "")
                         {
-                            if (comment.Length > 20)
-                            {
+                            
                                 o.Name = model.Name;
                                 o.Content = comment;
                                 o.NewsId = id;
@@ -314,10 +309,7 @@ namespace TkSchoolNews.Controllers
                                 new TblCommentDao().Create(o);
                                 TempData["scroll"] = "$(document).ready(function(){$('body').animate({ scrollTop: $(document).height() }, 1000);});";
                                 return RedirectToAction("NewsDetail", "Home", new { id = id, metatitle = HttpUtility.UrlDecode(metatitle) });
-                            }
-
-                            TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bình luận của bạn phải nhiều hơn 20 kí tự</span>";
-                            return View(obj);
+                            
                         }
 
                         TempData["alertempty"] = "<span class='text-danger' id='alertempty'>bạn không được để trống bình luận</span>";
