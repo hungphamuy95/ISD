@@ -2,7 +2,7 @@
 
 ![alt tag](https://raw.githubusercontent.com/octokit/octokit.net/master/octokit-dotnet_2.png)
 <br/>
-###yêu cầu:
+###Yêu cầu:
 
 -visual studio 2013, 2015
 
