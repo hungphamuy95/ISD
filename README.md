@@ -1,5 +1,6 @@
 # ISD
 
+https://raw.githubusercontent.com/octokit/octokit.net/master/octokit-dotnet_2.png
 hướng dẫn cấu hình để chạy
 
 bước 1: vào webconfig của cái TkSchool sửa password và data source sao cho thích hợp với sql server đã cài trong máy
