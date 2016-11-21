@@ -1,6 +1,6 @@
 # INFORMATION SYSTEM DESIGN - FALL 2016
 
-![alt tag](https://www.mugbug.co.uk/media/products/500/mb.i_love_c_sharp.coaster.jpg)
+![alt tag](http://i.imgur.com/PczqXoO.png)
 <br/>
 ###Yêu cầu:
 
