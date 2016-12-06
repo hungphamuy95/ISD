@@ -82,6 +82,7 @@ namespace TkSchoolNews.Controllers
                     ViewBag.NewsDetail = res;
                     ViewBag.FileAttach = new TblFileDao().FindByNewsId(numberid);
                     ViewBag.cmt = new TblCommentDao().FindByNewsId(numberid);
+                    ViewBag.topnews = new TblNewsDraffDao().TopNews();
                     if (res == null)
                     {
                         return RedirectToAction("ErrorCommon", "Error");

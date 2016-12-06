@@ -16,13 +16,13 @@
                 <tr>
                     <th>trích dẫn</th>
                     <td>
-                        @Html.Raw(HttpUtility.HtmlDecode(Model.Content))
+                        @Html.Raw(Model.Content)
                     </td>
                 </tr>
                 <tr>
                     <th>bình luận của bạn</th>
                     <td>
-                        <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />
+                       <br />
                         <textarea name="comment" id="txtComment"></textarea>
                         <br />
                         @if (TempData["alertempty"] != null)
@@ -53,7 +53,7 @@
             { name: 'document', items: ['Source', 'NewPage'] },
             { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
             { name: 'links', items: ['Link', 'Unlink'] },
-            { name: 'insert', items: ['Image', 'Smiley'] },
+            { name: 'insert', items: ['Smiley'] },
             ],
             smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
             smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif','happens.png'],

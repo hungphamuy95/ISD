@@ -5,12 +5,13 @@
     TblNewsDraff data = ViewBag.NewsDetail;
     TblFile file = (TblFile)ViewBag.FileAttach;
     List<TblComment> comm = (List<TblComment>)ViewBag.cmt;
+    List<TblNewsDraff> top = (List<TblNewsDraff>)ViewBag.topnews;
     ViewBag.Title =data.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
         <div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
             <h6><span style="color:darkslategrey">@Convert.ToDateTime(data.CreateDate).ToString("dd/MM/yyyy")</span>&nbsp;|&nbsp;<span style="color:darkslategrey;">người đăng: @data.CreateUser</span></h6>
 
@@ -50,7 +51,7 @@
                                 <strong>trích dẫn:</strong>
                                 <div class='panel panel-info'>
                                     <div class='panel-heading' style='color: black; '>
-                                        <span><strong><span style='color:red;'>@item.UserQoute</span> đã nói:</strong></span><br>@Html.Raw(item.Qoute))
+                                        <span><strong><span style='color:red;'>@item.UserQoute</span> đã nói:</strong></span><br>@Html.Raw(item.Qoute)
                                     </div>
                                 </div>
                                 @Html.Raw(item.Content)
@@ -84,7 +85,7 @@
                     <tr>
                         <th>bình luận của bạn</th>
                         <td>
-                            <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
+                           <br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
                             <br />
                             @if (TempData["alertempty"] != null)
                             {
@@ -106,19 +107,29 @@
         </div>
         <a href="@Url.Action("NewsList","Home")"><span  class="glyphicon glyphicon-arrow-left" style="font-size:30px;"></span><span style="font-size:20px;">&nbsp;DANH SÁCH TIN TỨC</span></a>
     </div>
-    <div class="col-lg-4">
-       <div class="affix">
-           <div id="fb-root"></div>
-           <script>
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=686794621468795";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-           <div class="fb-page" data-href="https://www.facebook.com/SMandHBO/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-       </div>
+    <div class="col-lg-3">
+      
+          <ul class="list-group">
+              <li class="list-group-item active">TIN MỚI NHẤT</li>
+              @foreach (var news in top)
+{
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-lg-3">
+                @Convert.ToDateTime(news.CreateDate).ToString("dd/MM/yyyy")
+        </div>&nbsp;
+            <div class="col-lg-9">
+                <a href="@Url.Action("NewsDetail","Home", new { @id=news.NewsId.ToString(), @metatitle=HttpUtility.UrlDecode(news.Metatitle)})">
+                    @news.Title
+                </a>
+            </div>
+        </div>
+    </li>
+}
+          </ul>
+ 
+              
+      
     </div>
     <br />&nbsp;
     
@@ -139,7 +150,7 @@
         { name: 'document', items: ['NewPage'] },
         { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
         { name: 'links', items: ['Link', 'Unlink'] },
-        { name: 'insert', items: ['Image', 'Smiley'] },
+        { name: 'insert', items: ['Smiley'] },
         ],
         smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
         smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif'],

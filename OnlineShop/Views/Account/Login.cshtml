@@ -55,12 +55,7 @@
                                 @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
 
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    @Html.EditorFor(model => model.rememberme)
-                                    @Html.ValidationMessageFor(model => model.rememberme, "", new { @class = "text-danger" })ghi nhớ
-                                </label>
-                            </div>
+                            
                             <input type="submit" value="đăng nhập" class="btn btn-default" />
                         </fieldset>
                     }

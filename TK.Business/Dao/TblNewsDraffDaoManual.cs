@@ -224,6 +224,23 @@ namespace TK.Business.Dao
                     throw new Exception("TBLNEWDRAFFDao::FindByTitleFile::" + ex.InnerException.Message);
             }
         }
+        public IEnumerable<TblNewsDraff> TopNews()
+        {
+            try
+            {
+                using (TkSchoolDbContext db = new TkSchoolDbContext())
+                {
+                    return db.Database.SqlQuery<TblNewsDraff>("select top 5 * from TblNewsDraff where TblNewsDraff.GroupNewsId=14 order by TblNewsDraff.CreateDate desc").ToList();
+                }
+            }
+            catch(Exception ex)
+            {
+                if (ex.InnerException == null)
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitleFile::" + ex.Message);
+                else
+                    throw new Exception("TBLNEWDRAFFDao::FindByTitleFile::" + ex.InnerException.Message);
+            }
+        }
         
     }
 }

@@ -21,14 +21,14 @@
             </tr>
             <tr>
                 <th>trích dẫn:</th>
-                <td>@Html.Raw(Model.Content))</td>
+                <td>@Html.Raw(Model.Content)</td>
             </tr>
             <tr>
                 <th>
                     bình luận của bạn
                 </th>
                 <td>
-                    <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />
+                    <br />
                     <textarea name="comment" id="txtComment"></textarea>
                     <br />
                     @if (TempData["alertempty"] != null)
@@ -64,7 +64,7 @@
             { name: 'document', items: ['Source', 'NewPage'] },
             { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
             { name: 'links', items: ['Link', 'Unlink'] },
-            { name: 'insert', items: ['Image', 'Smiley'] },
+            { name: 'insert', items: ['Smiley'] },
             
             ],
             smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',

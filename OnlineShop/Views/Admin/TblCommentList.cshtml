@@ -11,7 +11,7 @@
     <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">quản lý bình luận</span>
     <br /><br />
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
                 <h3>@news.title</h3>
                 @Html.Raw(System.Web.HttpUtility.HtmlDecode(news.content))
@@ -77,7 +77,7 @@
                            <tr>
                                 <th>bình luận của bạn</th>
                                 <td>
-                                    <span>Up ảnh tại <a href="http://2.pik.vn/" style="text-decoration:none;" target="_blank">pik.vn</a></span><br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
+                                   <br />@Html.TextAreaFor(model => model.Content, new { @id = "txtComment" })
                                     <br />
                                     @if (TempData["alertempty"] != null)
                                     {
@@ -115,7 +115,7 @@
         { name: 'document', items: ['NewPage'] },
         { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
         { name: 'links', items: ['Link', 'Unlink'] },
-        { name: 'insert', items: ['Image', 'Smiley'] },
+        { name: 'insert', items: ['Smiley'] },
         { name: 'paragraph', items: ['Blockquote'] }
         ],
         smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
