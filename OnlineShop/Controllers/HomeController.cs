@@ -59,6 +59,7 @@ namespace TkSchoolNews.Controllers
             {
                 var res = new TblNewsDraffDao().FindByNewsHotWeek(page, pagesize);
                 ViewBag.News = res;
+                ViewBag.topnews = new TblNewsDraffDao().TopNews();
                 return View();
             }
             catch (Exception ex)
