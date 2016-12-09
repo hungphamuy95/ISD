@@ -1,13 +1,25 @@
-# ISD
+# INFORMATION SYSTEM DESIGN - FALL 2016
 
-hướng dẫn cấu hình để chạy
+![alt tag](http://i.imgur.com/PczqXoO.png)
+<br/>
+###Yêu cầu:
 
-bước 1: vào webconfig của cái TkSchool sửa password và data source sao cho thích hợp với sql server đã cài trong máy
+-visual studio 2013, 2015
 
-bước 2: vào appconfig của TK.Business và sửa i hệt như webconfig trong bước 1
+-sql server 2005, 2008, 2012, 2014
+
+###Hướng dẫn cấu hình connection string
+<br/>
+-bước 1: vào webconfig của cái TkSchool sửa password của userid sa sao cho thích hợp với sql server đã cài trong máy
+
+-bước 2: vào appconfig của TK.Business và sửa giống như webconfig trong bước 1
 
 note: sửa lỗi object not refrernen as instance of object, vào webconfig chọn thẻ 
 
 "customErrors mode="Off""
 
 sửa mode="Off" thành "On"
+
+###Website:
+
+http://chidetest.somee.com/
