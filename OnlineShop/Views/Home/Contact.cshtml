@@ -7,26 +7,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <br />
-<div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
+<div class="panel panel-primary">
     @{
         TblNewsDraff obj = new TblNewsDraff();
         obj = (TblNewsDraff)ViewBag.School;
     }
-    <h4>@obj.Title</h4>
-    @Html.Raw(System.Web.HttpUtility.HtmlDecode(obj.Content))
-    <br />&nbsp;
-    <div id="map" style="width:100%;height:500px"></div>
-<script>
-        function myMap() {
-        var mapCanvas = document.getElementById("map");
-        var mapOptions = {
-            center: new google.maps.LatLng(20.817487, 106.407127),
-            zoom: 17
-    }
-        var map = new google.maps.Map(mapCanvas, mapOptions);
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDysvHNd8LcGQKASQq6TRYOQ0q9NP4M1lM&callback=myMap"></script>
+    <div class="panel-heading">
+        <h5>@obj.Title</h5>
+    </div>
+    <div class="panel-body">
+        @Html.Raw(System.Web.HttpUtility.HtmlDecode(obj.Content))
+        <br />&nbsp;
+        <div id="map" style="width:100%;height:500px"></div>
+        <script>
+            function myMap() {
+                var mapCanvas = document.getElementById("map");
+                var mapOptions = {
+                    center: new google.maps.LatLng(20.817487, 106.407127),
+                    zoom: 17
+                }
+                var map = new google.maps.Map(mapCanvas, mapOptions);
+            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDysvHNd8LcGQKASQq6TRYOQ0q9NP4M1lM&callback=myMap"></script>
+    </div>
 </div>
 <br />
 
