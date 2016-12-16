@@ -61,6 +61,7 @@ namespace TK.Business.Model
     {
         [Required(ErrorMessage = "bạn phải nhập tiêu đề", AllowEmptyStrings = false)]
         public string title { get; set; }
+        [StringLength(1500, ErrorMessage="nội dung của bạn không được vượt quá 1500 kí tự")]
         [Required(ErrorMessage = "bạn phải nhập nội dung sơ lược", AllowEmptyStrings = false)]
         public string shortcontent { get; set; }
         [Required(ErrorMessage = "bạn phải nhập nội dung", AllowEmptyStrings = false)]

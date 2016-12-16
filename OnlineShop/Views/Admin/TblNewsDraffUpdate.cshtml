@@ -20,12 +20,12 @@
 
         <div id="menu1" class="tab-pane fade">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div style="border: 2px solid #a1a1a1;padding: 10px 40px;border-radius: 10px;">
                         <div >
                             <h6><span style="color:darkslategrey">@Convert.ToDateTime(Model.createdate).ToString("dd/MM/yyyy")</span></h6>
-                            <h3>@Model.title</h3><br />
-                            @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.content))
+                            <br />
+                            @Html.Raw(Model.content)
                             @{
                             if (file == null)
                                 {
@@ -137,6 +137,8 @@
     <a href="@Url.Action("Index","Admin")">quản trị hệ thống</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("TblNewsDraffListIndex","Admin")">danh sách tin tức</a>&nbsp;&nbsp;&nbsp;&nbsp;<strong>></strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red;">cập nhật tin tức</span>
 <br />&nbsp;
 </div>
+<script src="~/assets/plugins/ckfinder/ckfinder.js"></script>
+<script src="~/assets/plugins/ckeditor/ckeditor.js"></script>
 <script>
     var app = angular.module("myApp", ['ngSanitize']);
     app.controller("myCtrl", function ($scope, $http, $window) {
@@ -152,25 +154,7 @@
             alert("bạn vừa nhấp vào đường dẫn của ảnh, điểu này có thể gây lỗi hệ thống, hãy chọn nút chọn ảnh để upload ảnh lên server");
         });
     });
-    var editor3 = CKEDITOR.replace('txtComment', {
-            extraPlugins: 'youtube',
-            uiColor: '#14B8C4',
-            language: 'vi',
-            ProcessHTMLEntities: false,
-            enterMode: CKEDITOR.ENTER_BR,
-            width: '100%',
-            skin: 'office2013',
-            toolbar: [
-            { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
-            { name: 'links', items: ['Link', 'Unlink'] },
-            { name: 'insert', items: ['Image', 'Smiley'] },
-            { name: 'paragraph', items: ['Blockquote'] }
-            ],
-            smiley_path: CKEDITOR.basePath + 'plugins/smiley/images/msn/',
-            smiley_images: ['adore.gif', 'after_boom.gif', 'ah.gif', 'amazed.gif', 'angry.gif', 'bad_smelly.gif', 'baffle.gif', 'band.gif', 'bang.gif', 'beat_brick.gif', 'beat_plaster.gif', 'beat_shot.gif', 'beauty.gif', 'big_smile.gif', 'boss.gif', 'brick.png', 'burn_joss_stick.gif', 'bye.gif', 'byebye.gif', 'canny.gif', 'capture.gif', 'cheers.gif', 'choler.gif', 'confident.gif', 'confuse.gif', 'cry.gif', 'doubt.gif', 'dribble.gif', 'embarrassed.gif', 'feel_good.gif', 'fix.gif', 'flame.gif', 'go.gif', 'haha.gif', 'hang.gif', 'hehe.gif', 'hell_boy.gif', 'hug.gif', 'hungry.gif', 'lay.gif', 'lmao.gif', 'lol.gif', 'look_down.gif', 'lovemachine.gif', 'loveyou.gif', 'matrix.gif', 'misdoubt.gif', 'nosebleed.gif', 'oh.gif', 'ops.gif', 'phone.gif', 'pudency.gif', 'puke.gif', 'rap.gif', 'rofl.gif', 'sad.gif', 'sexy_girl.gif', 'shame.gif', 'shit.gif', 'sleep.gif', 'smile.gif', 'smoke.gif', 'spam.gif', 'still_dreaming.gif', 'sure.gif', 'surrender.gif', 'sweat.gif', 'sweet_kiss.gif', 'theft.gif', 'tire.gif', 'too_sad.gif', 'waaaht.gif', 'what.gif', 'winner.gif','happens.png'],
-        smiley_descriptions:[':adore:',':boom:',':ah:',':amazed:',':angry:',':badsmelly:']
-    });
 </script>
-
+<script src="~/Content/CkEditor.js"></script>
 
 
