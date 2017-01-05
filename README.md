@@ -20,6 +20,7 @@ note: sửa lỗi object not refrernen as instance of object, vào webconfig ch�
 
 sửa mode="Off" thành "On"
 
+
 ###Website:
 
 http://chidetest.somee.com/
