@@ -1,6 +1,5 @@
-# INFORMATION SYSTEM DESIGN - FALL 2016
+# Blog & News Management CMS
 
-![alt tag](http://i.imgur.com/PczqXoO.png)
 <br/>
 ###Yêu cầu:
 
